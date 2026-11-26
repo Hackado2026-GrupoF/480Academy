@@ -43,7 +43,7 @@ Se establecen tres roles:
 - El test inicial será voluntario y servirá para caracterizar los conocimientos previos del alumno y medir su evolución. No será requisito de certificación ni influirá en la nota que habilita el certificado.
 - La ausencia de evaluación inicial se representa como información desconocida, no como una nota de cero ni como falta de competencias.
 - Se utilizará la autoevaluación de confianza del alumno como información complementaria, diferenciándola del resultado objetivo de los tests.
-- El test final se utilizará para acreditar la superación del curso a efectos de certificación.
+- El test final será voluntario para el alumno, pero superarlo será necesario para obtener el certificado del curso.
 - Se permiten hasta dos intentos del test final y se conserva la mayor calificación obtenida.
 - El aprovechamiento educativo se analizará teniendo en cuenta tanto el nivel final como la mejora respecto al nivel de partida cuando exista información inicial.
 
@@ -51,12 +51,12 @@ Se establecen tres roles:
 
 Se incorporarán preguntas breves de atención y comprensión asociadas a segmentos del vídeo.
 
-- La participación será voluntaria. No se bloqueará la reproducción ni se exigirá responder para continuar aprendiendo.
-- Los bancos de preguntas se organizan por vídeo, segmento o tema, de forma que puedan reutilizarse y ampliarse.
+- La participación será voluntaria. Las preguntas aparecerán como ventanas emergentes sin detener ni bloquear la reproducción del vídeo; no se exigirá responder para continuar aprendiendo. Los puntos de aparición serán configurables según la duración del vídeo.
+- Los bancos de preguntas se organizan por vídeo, segmento o tema, de forma que puedan reutilizarse y ampliarse de manera acumulativa. En cada aparición se seleccionará aleatoriamente una pregunta del banco correspondiente.
 - La IA podrá generar las preguntas de antemano, evitando generar innecesariamente un nuevo conjunto por cada reproducción. El docente podrá revisarlas y corregirlas.
 - Las preguntas se presentan en la plataforma, separadas del archivo audiovisual externo.
 - Los aciertos pueden aportar reputación simbólica; los errores y las omisiones no penalizan.
-- La puntuación asociada al vídeo solo se concede una vez, evitando recompensar repetidamente el mismo contenido.
+- Cada vídeo tendrá un máximo de reputación obtenible por sus preguntas. Al repetirlo, el alumno podrá conseguir los puntos que le falten hasta alcanzar ese máximo, pero no acumular reputación indefinidamente mediante nuevas reproducciones.
 - Las respuestas son señales complementarias de actividad y comprensión, no pruebas concluyentes de atención durante toda la reproducción.
 
 ## 5. Foros y aprendizaje colaborativo
@@ -67,6 +67,7 @@ El foro será el espacio de interacción entre alumnos, docentes e IA, evitando 
 - La IA podrá participar como agente identificable dentro de los hilos, colaborar en la moderación y aportar respuestas cuando una consulta quede sin resolver durante un intervalo de tiempo configurable.
 - Se contempla la valoración de la calidad de las respuestas mediante una puntuación de 0 a 10 representable mediante estrellas, con asistencia de IA. El docente podrá corregir las valoraciones.
 - Se incentivarán la primera respuesta correcta y la rapidez de las contribuciones útiles. No se concederán puntos por responder a una pregunta propia.
+- Cuando la IA responda a una consulta sin resolver, consumirá la bonificación por primera respuesta, pero no cerrará el hilo. Las aportaciones humanas posteriores seguirán pudiendo obtener reputación según su calidad. La IA no acumulará reputación.
 - No se implementará un sistema específico de detección de colusión entre alumnos para la maqueta.
 - El objetivo es mejorar la disponibilidad del feedback y reducir consultas repetitivas al docente sin sustituir su criterio educativo.
 
@@ -85,6 +86,7 @@ Se implementará un recomendador determinista, independiente del modelo predicti
 - Se considerarán las competencias asociadas a los cursos, su dificultad, los conocimientos previos y los intereses del alumno.
 - Las recomendaciones orientarán al alumno hacia contenidos adecuados a su perfil y sus objetivos.
 - La navegación será libre. Las recomendaciones no constituyen prerrequisitos obligatorios ni bloquean cursos.
+- El administrador podrá gestionar las notificaciones comerciales por correo electrónico destinadas a recomendar cursos a los alumnos.
 
 ## 8. Telemetría y modelo predictivo
 
@@ -108,7 +110,7 @@ La aproximación prioriza la interacción con los contenidos y evita depender de
 - Se empleará IA para encontrar relaciones y patrones entre las señales recogidas y los resultados formativos.
 - El objetivo es estimar el engagement y el desempeño educativo mediante múltiples señales, contrastándolos con el nivel final y la evolución del alumno cuando puedan medirse.
 - El sistema tendrá en cuenta el nivel de partida y la información ausente. No se interpretará automáticamente un dato ausente como evidencia negativa.
-- El modelo emitirá inferencias individualizadas sobre cada alumno, diferenciando predicciones probabilísticas y su confianza de los hechos observados.
+- El modelo emitirá inferencias individualizadas sobre cada alumno, diferenciando predicciones probabilísticas de los hechos observados. Las estimaciones de engagement y éxito formativo se expresarán numéricamente y estarán acompañadas de su correspondiente nivel de confianza. Cuando los datos disponibles sean insuficientes para emitir una predicción, se indicará expresamente esa circunstancia en lugar de mostrar una puntuación sin fundamento.
 - La recalibración o mejora del modelo será una operación manual iniciada por el administrador, separada de la generación habitual de predicciones. Para la demo se contempla ejecutar la recalibración en varias ocasiones; no se fija una periodicidad automática.
 - El algoritmo concreto, la representación de las señales y los parámetros numéricos se resolverán durante la implementación, sin presuponer eficacia predictiva validada.
 
@@ -122,6 +124,7 @@ La aproximación prioriza la interacción con los contenidos y evita depender de
 | Telemetría detallada subyacente al modelo | No expuesta | No expuesta |
 
 - El docente configurará el cálculo de patrones y la periodicidad de los informes, semanal por defecto.
+- El docente podrá configurar avisos educativos por correo electrónico a sus alumnos rezagados y establecer el umbral de éxito formativo que se utilizará para identificar a los destinatarios de dichos avisos.
 - Los informes del piloto se centran **exclusivamente en el nivel individual de cada alumno**. No se desarrollarán informes agregados del curso o de la plataforma.
 - La finalidad de las predicciones es orientar el seguimiento educativo del docente. No constituyen hechos comprobados ni deben determinar automáticamente notas, certificados o restricciones de acceso.
 
