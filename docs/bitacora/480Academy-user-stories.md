@@ -103,16 +103,16 @@ Total: 52 historias (38 imprescindibles, 9 deseables, 5 opcionales).
 **Como** usuario registrado, **quiero** acceder según capacidades y permisos **para** aprender o gestionar recursos desde la misma cuenta.
 
 - [ ] Todos llegan a «Mis cursos»; administrador tiene panel HU-44.
-- [ ] Roles globales alumno/docente/administrador acumulativos en capacidad; un docente puede tener lectura de un curso y edición de otro. Un rol global no concede automáticamente recursos.
-- [ ] Servidor comprueba lectura o edición válida por recurso en cada operación; edición requiere rol docente/administrador y asignación explícita. Informes solo de cursos gestionados.
+- [ ] Roles globales alumno/docente/administrador y permisos independientes por curso; un docente puede aprender en uno y editar otro. Un rol global no concede automáticamente recursos ni facultades docentes por curso, tampoco el de administrador.
+- [ ] Servidor comprueba lectura o asignación docente válida por recurso en cada operación. Edición requiere cuenta habilitada (docente o administrador) y asignación docente explícita en ese curso; informes, moderación docente, publicación y evaluación solo para docentes asignados. Ser administrador no permite saltarse esta comprobación.
 - [ ] Rechazar acceso directo sin permiso, autoasignación o cambio de rol por no administrador. Solo administrador utiliza HU-50/HU-51.
-- [ ] Revocaciones y cambios de rol se aplican en servidor; lectura independiente sigue vigente si se pierde edición. Administrador no asignado no recibe automáticamente acceso a contenidos privados.
+- [ ] Revocaciones y cambios de rol se aplican en servidor; lectura independiente sigue vigente si se pierde edición. Administrador no asignado no recibe acceso a contenidos privados ni facultades docentes, ni por interfaz ni por API.
 
 #### HU-03 · Cuentas de demostración preconfiguradas — Imprescindible
 
 **Como** miembro del equipo, **quiero** que existan cuentas de administrador y docente creadas automáticamente **para** poder hacer la demostración sin configuración manual.
 
-- [ ] El proceso de *seeding* crea las cuentas `admin` y `docente`.
+- [ ] El proceso de *seeding* crea las cuentas `admin` y `docente`; asigna expresamente al administrador inicial como docente de bienvenida, sin asignarle por defecto los demás cursos.
 - [ ] Las contraseñas se leen de variables de entorno; no se publican credenciales triviales (`admin/admin`) en un despliegue público.
 - [ ] Ejecutar el *seeding* dos veces no duplica las cuentas.
 
@@ -163,7 +163,7 @@ Total: 52 historias (38 imprescindibles, 9 deseables, 5 opcionales).
 - [ ] Recurso publicado con descripción/tutorial textual y foro general, lectura automática desde registro, sin compra.
 - [ ] Primero entre no gestionados hasta visitarlo; luego historial HU-06.
 - [ ] Puede carecer de temas, vídeos y evaluaciones sin error ni bloqueo.
-- [ ] Administrador asigna edición a docente o a sí mismo (HU-51); gestor edita y puede añadir vídeo luego (HU-05). Producción audiovisual opcional.
+- [ ] Administrador inicial asignado explícitamente como docente de bienvenida mediante seeding; puede asignar otros docentes (HU-51). Solo docentes asignados editan y añaden vídeo (HU-05). Producción audiovisual opcional.
 
 ### Épica 3 · Evaluación formativa
 
@@ -499,7 +499,7 @@ Total: 52 historias (38 imprescindibles, 9 deseables, 5 opcionales).
 - [ ] Puedo acceder a mis cursos gestionados y a sus contenidos con los componentes comunes y las acciones adicionales correspondientes a mi permiso.
 - [ ] En la vista de edición se conserva el orden pedagógico original (HU-05); puedo entrar a la gestión de vídeos, preguntas, evaluaciones, foro y seguimiento individual desde el contexto apropiado.
 - [ ] Edición solo en cursos asignados mediante HU-51, sin autoasignación. Cursos gestionados encabezan lista aunque aprenda en otros.
-- [ ] Administrador con edición explícita usa mismas vistas; reutiliza HU-05, HU-10, HU-12, HU-28 y HU-49.
+- [ ] Administrador solo si tiene asignación docente explícita utiliza mismas vistas y capacidades que cualquier docente asignado; reutiliza HU-05, HU-10, HU-12, HU-28 y HU-49. Varios docentes de un mismo curso usan las mismas vistas y derechos.
 
 #### HU-43 · Configurar la intervención de IA en el foro — Imprescindible
 
@@ -518,7 +518,7 @@ Total: 52 historias (38 imprescindibles, 9 deseables, 5 opcionales).
 - [ ] Puedo abrir una página de administración exclusiva de mi rol y volver a la experiencia común; otros roles no tienen acceso por interfaz ni por ruta/API directa.
 - [ ] Panel presenta recalibración HU-29, roles HU-50 y recursos HU-51; no aplica adaptación a herramientas administrativas.
 - [ ] La interfaz se optimiza para escritorio, conserva identidad visual común y mantiene legibles y accesibles sus operaciones principales en pantallas pequeñas.
-- [ ] El administrador que gestiona un curso puede entrar a sus vistas docentes (HU-42), sin duplicar la edición dentro del panel.
+- [ ] El panel no contiene un editor pedagógico ni otorga permisos docentes. Un administrador puede entrar a vistas docentes HU-42 únicamente si está asignado como docente de ese curso. Probar rechazo de edición, publicación, moderación docente e informes en un curso no asignado, incluso por API.
 
 #### HU-45 · Configurar las integraciones de IA de la plataforma — Deseable
 
@@ -580,13 +580,13 @@ Total: 52 historias (38 imprescindibles, 9 deseables, 5 opcionales).
 
 #### HU-51 · Crear recursos y asignar permisos por curso — Imprescindible
 
-**Como** administrador, **quiero** crear cursos y conceder/retirar lectura o edición **para** simular compras y gestionar recursos.
+**Como** administrador, **quiero** crear registros de curso y conceder/retirar lectura o asignaciones docentes **para** simular compras y gestionar recursos de negocio.
 
-- [ ] Creo recurso de curso y asigno edición a docente/administrador, incluido a mí mismo; gestor completa y publica HU-05.
-- [ ] Concedo/revoco lectura por usuario y curso y asigno/retiro edición a cuentas habilitadas. Edición incluye lectura y gestión; puedo aprender en un curso y editar otro. Sin duplicados ni pérdida de lectura independiente al retirar edición.
-- [ ] Mostrar permisos y fecha de concesión, confirmar cambios; bienvenida mantiene lectura automática, edición asignable.
+- [ ] Creo el registro inicial de curso como recurso de negocio y asigno uno o varios docentes (cuentas docente/administrador, incluido a mí mismo). Solo los asignados completan, editan y publican HU-05; no hay edición pedagógica por ser administrador.
+- [ ] Concedo/revoco lectura por usuario y curso y asigno/retiro docentes de forma independiente por pareja usuario–curso. Un curso puede tener varios docentes simultáneos con derechos de edición equivalentes; retirar a uno no afecta a los otros. Edición incluye lectura y gestión; una cuenta puede aprender en un curso y editar otro. Sin duplicados ni pérdida de lectura independiente al retirar edición.
+- [ ] Mostrar todos los docentes asignados al curso, permisos por usuario y fecha de concesión; confirmar cambios. Bienvenida mantiene lectura automática y asignación docente inicial del administrador, ampliable.
 - [ ] Revocar bloquea operaciones afectadas en servidor, sin borrar progreso automáticamente; no docentes autoasignándose ni gestionando roles/recursos de cuenta.
-- [ ] Probar conceder curso bloqueado, asignar edición, revocar, permisos cruzados y rechazo de acceso directo. Sin dinero, transacción, factura ni pasarela.
+- [ ] Probar concesión de curso bloqueado, dos docentes editando un mismo curso, retirada de uno sin afectar al otro, administrador sin asignación rechazado en operaciones docentes y administrador asignado a bienvenida autorizado. Sin dinero, transacción, factura ni pasarela.
 
 #### HU-52 · Consultar curso bloqueado y simular adquisición — Imprescindible
 
@@ -645,7 +645,7 @@ Los flujos siguientes comprueban que las historias funcionan conjuntamente. No s
 | Alumno · evaluación y progresión | Abrir evaluación desde el menú → test inicial voluntario si existe → test final voluntario → resultado/progreso → certificado por URL → recomendaciones | HU-13, HU-14, HU-23, HU-24, HU-26, HU-32, HU-33, HU-36; HU-15 si se implementa |
 | Alumno · auxiliar | Consultar perfil → preferencias/logros → gestión de certificados → revisión y solicitud de acuñación si se aprueba | HU-21, HU-24, HU-32, HU-36, HU-38; HU-41 deseable y HU-34 opcional |
 | Docente | Promoción y asignación → gestionados primero → editar estructura → configurar orden por lista → preguntas/tests → informes → foro | HU-02, HU-05, HU-10, HU-12, HU-17, HU-28, HU-36, HU-42, HU-43, HU-48 a HU-51; HU-11, HU-19, HU-20, HU-30, HU-31 según prioridad |
-| Administrador | Panel → cambiar rol → crear recurso/asignar edición → conceder/revocar lectura → verificar lista/permisos → recalibrar y comprobar versión | HU-02, HU-29, HU-35, HU-42, HU-44, HU-48, HU-50, HU-51; HU-45 a HU-47 deseables |
+| Administrador | Panel → cambiar rol → crear registro/asignar varios docentes → conceder/revocar lectura → verificar permisos (sin edición pedagógica por rol) → recalibrar y comprobar versión | HU-02, HU-29, HU-35, HU-42, HU-44, HU-48, HU-50, HU-51; HU-45 a HU-47 deseables |
 
 ### 6.1. Dependencias funcionales de integración
 

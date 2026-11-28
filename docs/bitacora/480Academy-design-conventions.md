@@ -110,7 +110,7 @@ Los niveles no se mezclan. La bienvenida se integra en el historial después de 
 
 Los cursos gestionados tienen una acción o indicador discreto de edición. Los cursos bloqueados se muestran atenuados con contraste y etiqueta accesible; pulsar abre únicamente el mensaje «Para acceder a este curso necesitas adquirirlo. Las compras no están disponibles en esta demostración». No abre contenidos ni registra último acceso. Sin pago, factura ni concesión automática; el administrador concede lectura para simular compra. Los borradores solo son visibles para sus gestores.
 
-El curso de bienvenida es obligatorio desde el registro, con descripción/tutorial textual y foro general, aunque carezca de temas, vídeos y evaluaciones. Lectura automática para todos; edición asignada por el administrador, que puede asignársela a sí mismo o a un docente para añadir vídeos posteriormente. El vídeo tutorial es opcional.
+El curso de bienvenida es obligatorio desde el registro, con descripción/tutorial textual y foro general, aunque carezca de temas, vídeos y evaluaciones. Lectura automática para todos. El seeding asigna expresamente al administrador inicial como docente/editor de este curso, no de los demás por razón de su cargo. El administrador puede asignar otros docentes a bienvenida para ampliar su contenido. El vídeo tutorial es opcional.
 
 Curso plano: vídeos directamente bajo el curso. Curso temático: temas con listas de vídeos. Mantener el patrón común de tarjetas. El [anexo de vídeos demostrativos](480Academy-anexo-videos-demostrativos.md) propone placeholders externos autorizados, no material definitivo del cliente.
 
@@ -210,7 +210,7 @@ Como propuesta de estabilidad, actualizar la ordenación al acceder o refrescar 
 
 ## 9. Docente: experiencia común enriquecida
 
-El docente utiliza la misma identidad, patrones y tarjetas que el alumno; tiene capacidades de aprendizaje y edición únicamente sobre cursos asignados por un administrador. No se autoasigna recursos; sus cursos gestionados encabezan la lista única (§5.1).
+El docente utiliza la misma identidad, patrones y tarjetas que el alumno; tiene capacidades de aprendizaje y edición únicamente sobre cursos en los que tenga asignación docente explícita. Un curso admite varios docentes con derechos de edición equivalentes e independientes. No se autoasigna recursos; sus cursos gestionados encabezan la lista única (§5.1).
 
 - Editar y publicar/despublicar cursos asignados, crear y editar sus temas y vídeos, sustituir enlaces y modificar el orden. El administrador crea el recurso de curso y asigna edición; el docente no crea cursos con autoasignación ni concede permisos.
 - En edición, presentar el orden canónico, permitir modificarlo y configurar los interruptores independientes de §5.2; conservar ordinales en el editor. Reutilizar vistas comunes.
@@ -227,13 +227,13 @@ Para la edición de preguntas por segmentos, Stitch puede explorar una línea te
 
 ## 10. Administrador: panel adicional
 
-El administrador conserva capacidades de alumno y puede asumir edición explícita de un curso, incluso asignándosela a sí mismo. Puede haber varios administradores. El rol global habilita capacidades pero no concede automáticamente lectura, edición ni informes de todos los cursos.
+El administrador gestiona exclusivamente las funciones de negocio y de plataforma en calidad de administrador. Puede haber varios administradores. El rol de administrador no implica ser docente ni permite editar, publicar/despublicar, modificar contenidos o evaluaciones, moderar foros como docente ni consultar informes individuales de un curso. Para ejercer esas funciones necesita una asignación docente explícita al curso concreto, igual que cualquier otro editor. Puede asignarse esa condición mediante la gestión administrativa, pero no la recibe automáticamente. El administrador inicial tendrá asignación docente en el curso de bienvenida; no en los demás por defecto.
 
 Además dispone de un panel de administración de plataforma, independiente, de navegación estable y convencional. Priorizar funcionalidad sobre innovación visual; no aplicar por defecto la reordenación dinámica de tarjetas. Puede usar navegación lateral, pestañas, tablas, formularios y gráficas, conservando los colores y tipografía comunes. Diseñar principalmente para PC y adaptar razonablemente a pantallas pequeñas.
 
 Capacidades previstas:
 
-- Gestión imprescindible de cuentas: listar/buscar, asignar rol alumno/docente/administrador, crear recursos de curso y conceder/retirar lectura y edición por usuario y curso. Mostrar permisos vigentes y confirmar cambios; impedir autoasignaciones por no administradores y escaladas por API. Sin pasarela, pago ni facturación.
+- Gestión imprescindible de cuentas: listar/buscar, asignar rol alumno/docente/administrador, crear el registro inicial de un curso como recurso de negocio y conceder/retirar lectura y asignaciones docentes por usuario y curso. Admitir múltiples docentes simultáneos por curso, mostrar todos los asignados y permitir retirar uno sin afectar a los otros. La creación del registro y la asignación no habilitan edición pedagógica sin asignación docente propia. Confirmar cambios; impedir autoasignaciones por no administradores y escaladas por API. Sin pasarela, pago ni facturación.
 - Gestión de integraciones de IA; configuración de proveedores/modelos y funciones delegadas.
 - Acciones manuales para investigar patrones y recalibrar el modelo predictivo; mostrar el estado, la versión y la última ejecución. Diferenciar recalibración de inferencia cotidiana.
 - Métricas técnicas e historial de ejecución del modelo, claramente identificados como experimentales. No introducir por ello informes educativos agregados que quedaron fuera de alcance.
@@ -280,7 +280,7 @@ Inventario orientativo (priorizar las historias imprescindibles; agrupar estados
 | Certificados | Certificado propio, URL verificable y vista de verificación; acuñación explícita solo si se aprueba |
 | Docente | Lista de cursos común, edición de estructura original y vídeo, banco de preguntas, evaluaciones y moderación |
 | Seguimiento docente | Lista de alumnos e informe individual con hechos, predicciones, confianza y datos insuficientes |
-| Administración (PC) | Navegación fija, gestión de roles y permisos por usuario/curso, creación de curso y asignación docente, integraciones y recalibración manual |
+| Administración (PC) | Navegación fija, gestión de roles y permisos por usuario/curso, creación del registro de curso y asignación de varios docentes, integraciones y recalibración manual; sin editor pedagógico en el panel |
 
 Incluir variantes de estado (carga, vacío, error, sin datos, sin permiso, guardado/confirmación) de los componentes imprescindibles cuando sea posible. Los controles que se muestren como funcionales deben corresponder al alcance aprobado o quedar identificados como opcionales.
 

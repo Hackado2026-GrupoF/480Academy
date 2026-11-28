@@ -15,23 +15,23 @@ La solución combina evaluación, aprendizaje social, gamificación, recomendaci
 
 ## 2. Roles, autenticación y acceso
 
-Tres roles globales de capacidad acumulativa; los permisos por curso son independientes.
+Tres roles globales y permisos independientes por curso. Las funciones de administración de negocio/plataforma no incluyen por sí mismas las de docencia. La condición de docente de un curso se obtiene por asignación explícita, incluso para una cuenta administradora.
 
 | Rol | Responsabilidad |
 | --- | --- |
 | Alumno | Aprender en cursos concedidos y consultar progreso/reputación. |
 | Docente | Capacidades de alumno más edición, publicación y gestión de cursos asignados y seguimiento de sus alumnos. |
-| Administrador | Capacidades anteriores cuando tiene asignación del recurso, más gestión de roles, cursos, permisos y recalibración. |
+| Administrador | Gestión de negocio y plataforma: roles, registros de cursos, permisos y recalibración. Solo actúa como docente en cursos con asignación docente explícita. |
 
-- El seeding crea inicialmente una cuenta admin y una docente; las nuevas cuentas son alumno por defecto. Puede haber varios administradores/docentes; Google OAuth sigue opcional.
-- Solo el administrador cambia roles, crea recursos de curso y concede/retira lectura y edición por usuario y curso. Puede asignarse edición a sí mismo. Promover a docente no otorga cursos; puede aprender en uno y editar otro, sin duplicar cuenta. Edición incluye lectura y gestión, no permite autoasignación ni conceder accesos.
+- El seeding crea inicialmente una cuenta admin y una docente; las nuevas cuentas son alumno por defecto. Puede haber varios administradores/docentes; Google OAuth sigue opcional. El administrador inicial recibe asignación docente explícita en bienvenida; no en el resto de cursos por defecto.
+- Solo el administrador cambia roles, crea el registro inicial de cursos como recurso de negocio y concede/retira lectura y asignaciones docentes por usuario y curso. Puede asignarse como docente, pero el rol administrador no da derechos pedagógicos ni acceso a informes de ningún curso por sí solo. Un curso admite varios docentes con los mismos derechos de edición, cada uno asignado independientemente; retirar uno no afecta a los demás. Promover a docente no otorga cursos; una cuenta puede aprender en uno y editar otro, sin duplicarse. Edición docente incluye lectura y gestión pedagógica, no autoasignación ni concesión de accesos por condición docente.
 - La concesión de lectura simula una compra; guardar fecha de concesión, sin dinero, facturación, pasarela ni transacción. Revocación impide el acceso salvo otro permiso válido, sin borrar historial automáticamente.
 - Como criterio de seguridad propuesto, degradar rol invalida capacidades incompatibles; impedir dejar la plataforma sin administrador. Los permisos se verifican en servidor por interfaz y API. No se requiere CRUD general de cuentas.
 - Contraseñas de demostración en variables de entorno; no publicar credenciales privilegiadas triviales. El acceso interno no protege URLs públicas externas.
 
 ## 3. Cursos y contenidos audiovisuales
 
-- El administrador crea el recurso y asigna edición; el docente autorizado organiza, edita y publica cursos, temas, vídeos y evaluaciones. Alumnos acceden a cursos publicados con lectura concedida; gestores pueden editar borradores.
+- El administrador crea el registro inicial del recurso y asigna uno o varios docentes; únicamente estos organizan, editan y publican el curso, sus temas, vídeos y evaluaciones, incluidos borradores. El administrador solo puede hacerlo si también tiene asignación docente en ese curso. Alumnos acceden a cursos publicados con lectura concedida.
 - Vídeos externos autorizados con reproductor HTML5 propio, no YouTube. Guardar enlaces, atribución y metadatos, no archivos audiovisuales pesados; proveedor desacoplado. Véase [anexo](480Academy-anexo-videos-demostrativos.md).
 - Curso plano: vídeos directamente bajo el curso. Curso temático: temas con vídeos. Configuración de adaptación independiente por lista:
 
@@ -43,7 +43,7 @@ Tres roles globales de capacidad acumulativa; los permisos por curso son indepen
 
 Modo fijo: todos los elementos en orden canónico, incluyendo iniciados y vistos; ordinal generado por la interfaz antes del título, sin cambiar al marcar como visto. Modo adaptativo: sin ordinales incluso en respaldo; último pendiente iniciado primero (o su tema), después pendientes por interés y vistos/completados al final; si no hay señales suficientes, orden canónico entre pendientes. Recalcular al acceder y al completar/marcar, con desempates estables. El docente conserva el orden canónico y puede alternar modos sin modificar títulos ni posiciones almacenadas. En ambos modos el alumno puede saltar libremente, sin prerrequisitos. El editor siempre muestra la secuencia canónica. En el dossier se explicará que los títulos no deben incluir prefijos numéricos de orden. Valor inicial propuesto: fijo en listas nuevas; seed con ambos modos y combinaciones mixtas.
 
-- Bienvenida obligatoria desde registro, con descripción/tutorial textual y foro general, incluso sin temas, vídeos o evaluaciones. Lectura automática para todos; edición asignada por el administrador. Vídeo tutorial opcional.
+- Bienvenida obligatoria desde registro, con descripción/tutorial textual y foro general, incluso sin temas, vídeos o evaluaciones. Lectura automática para todos; administrador inicial asignado expresamente como docente/editor, con posibilidad de añadir otros docentes. Vídeo tutorial opcional.
 
 ### 3.1. Lista unificada de cursos
 
@@ -188,7 +188,7 @@ La plataforma se diseña teniendo en cuenta que sus futuros usuarios pueden ser 
 2. Realizar evaluaciones, observar el progreso y consultar reputación, logros y recomendaciones.
 3. Publicar una consulta o contribución en el foro y mostrar la interacción o moderación asistida por IA.
 4. Promover cuenta a docente, asignar edición de otro curso y comprobar prioridad/permisos; editar contenido, configurar modos fijo/adaptativo, preguntas, contribuciones e informes.
-5. Administrador: asignar/retirar roles y permisos, crear recurso y asignar edición; recalibrar modelo con datos demostrativos.
+5. Administrador: asignar/retirar roles y permisos, crear registro de recurso y asignar varios docentes; comprobar que no puede editar cursos no asignados y que puede editar bienvenida como docente asignado; recalibrar modelo con datos demostrativos.
 6. Mostrar el flujo de certificación propia mediante URL y, si se incorpora, su extensión blockchain.
 
 Los escenarios de demostración orientan la implementación y no convierten las mejoras opcionales en condiciones de aceptación. Los datos sintéticos prueban el funcionamiento del piloto, no la precisión del modelo ante alumnos reales ni una mejora educativa efectiva.
