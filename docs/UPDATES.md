@@ -22,3 +22,21 @@
 **Siguiente relevo.** Catálogo implementa [su contrato](specs/catalogo.md) y pruebas con fixtures. UI y reproductor preparan [sus componentes](../DESIGN.md). Quien gestione despliegue registra el resultado de SPIKE-01 y coordina la verificación de clips. Las tareas que requieran el tablero remoto consultan el [contrato D15](MCP.md).
 
 Para cada relevo posterior registrar fecha, tarea, requisitos, rama/SHA, cambio realizado, controles y resultados, limitaciones y primera acción pendiente. Marcar revisión y aceptación humana cuando se produzcan.
+
+## 28 de noviembre de 2026 · TASK-01 · Catálogo y orden
+
+REQ-02/03 y prueba de dominio de V-03. Implementación de los cinco grupos de Mis cursos y del orden por lista en `feat/TASK-01-catalogo`, desde `dev` en `f7c9cc2`. [Módulo](../src/lib/domain/catalogo.mjs) · [Pruebas](../tests/catalogo.test.mjs).
+
+| Consumidor | Interfaz y relevo |
+| --- | --- |
+| Servidor · TASK-02 | Resolver `mayEdit` y `hasReadGrant` por usuario y curso y pasar un registro por ID a `proyectarCatalogo(cursos)`, con historial autorizado y fechas en UTC. Adjuntar solo metadatos públicos de tarjeta al estado `blocked`. Comprobar permisos al acceder al recurso y registrar la visita tras autorizarlo |
+| UI · TASK-03 | Renderizar la secuencia `{ id, group, access, action }` en el orden entregado. `open` dirige al recurso y `notice` muestra `AVISO_CURSO_BLOQUEADO`. Por lista, `ordenarLista(mode, unidades)` devuelve `id`, `position` canónica, `title`, `seen` y `visualPosition` desde 1. Mostrar `ordinal` antes del título cuando esté presente |
+| Integración · TASK-05 | Usar `resumirTema(videos)` para calcular `seen` y `lastStartedAt` de cada tema. Volver a proyectar con permisos y progreso vigentes tras refrescar. Acordar el cálculo real de interés. El respaldo provisional se aplica cuando falta una puntuación finita en el tramo que se ordena por interés |
+
+Los tipos de entrada y las salidas están detallados en el [contrato ESM](specs/catalogo.md#interfaz-esm). Quedan pendientes la autorización y persistencia en servidor y la comprobación de V-03 en UI integrada.
+
+| Comprobación ejecutada | Resultado |
+| --- | --- |
+| `node --test tests/catalogo.test.mjs` | 10 pruebas correctas con datos sintéticos y entradas congeladas |
+| `git diff --check` | Sin incidencias de espacios en el diff |
+| `python3 scripts/check-bootstrap.py` | 131 enlaces locales, 52 historias trazadas, 20 referencias WebP y alcance D15 comprobados de forma estática |
