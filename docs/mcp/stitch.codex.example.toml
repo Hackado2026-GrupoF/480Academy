@@ -1,0 +1,7 @@
+# Ejemplo inerte. El operador revisa docs/MCP.md antes de adaptarlo.
+[mcp_servers.stitch_480academy]
+enabled = false
+url = "https://stitch.googleapis.com/mcp"
+env_http_headers = { "X-Goog-Api-Key" = "STITCH_API_KEY" }
+enabled_tools = ["get_project", "list_screens"]
+# get_screen queda pendiente de vincular y aprobar IDs concretos.

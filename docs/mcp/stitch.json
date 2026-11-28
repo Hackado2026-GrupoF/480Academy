@@ -1,0 +1,54 @@
+{
+  "schema_version": "0.1-experimental",
+  "capability_id": "CAP-DESIGN",
+  "intent": "Consultar el tablero de diseño y contrastar revisiones autorizadas",
+  "lifecycle": "engineering",
+  "requirement_refs": ["REQ-03", "REQ-04", "RNF-09", "TASK-12"],
+  "decision_owner": "Grupo F, responsable del tablero",
+  "approval": "alcance declarado. Ejecución remota pendiente de autorización",
+  "provider": "Google Stitch",
+  "transport": "MCP sobre HTTPS",
+  "endpoint": "https://stitch.googleapis.com/mcp",
+  "resource": {
+    "kind": "design-project",
+    "name": "480Academy Design System",
+    "id": "9338956345887203749",
+    "screen_ids": [],
+    "screen_binding_status": "pendiente de cotejo y aprobación",
+    "live_revision": "no verificada"
+  },
+  "auth": {
+    "method": "api-key",
+    "secret_ref": "env:STITCH_API_KEY",
+    "account_role": "operador humano autorizado para leer el tablero"
+  },
+  "permissions": {
+    "operations": ["read"],
+    "tools": ["get_project", "list_screens", "get_screen"],
+    "requested_scope": "solo el proyecto declarado y pantallas vinculadas y aprobadas",
+    "actual_credential_scope": "desconocido",
+    "resource_enforcement": "no verificada. El filtro de herramientas es declarativo",
+    "strict_isolation_required": null,
+    "remote_use": "inactivo hasta aprobación de riesgo residual o verificación de aislamiento",
+    "get_screen_gate": "autorizar IDs explícitos vinculados al proyecto antes de invocar"
+  },
+  "client": {
+    "status": "no configurado por este repositorio",
+    "example": "docs/mcp/stitch.codex.example.toml"
+  },
+  "fallback": {
+    "paths": ["DESIGN.md", "docs/design/stitch/"],
+    "source": "stitch_480academy_design_system.zip",
+    "snapshot_date": "2026-11-28",
+    "sha256": "c11ab61c1d3870b3e45df5f5018970d883530b88e5535c70cebe9a231402d554",
+    "screen_count": 20,
+    "authority": "exportación entregada para el bootstrap. Comportamiento según PRD y bitácora vigente"
+  },
+  "readiness": {
+    "required_for_current_task": false,
+    "live_access": "inactivo",
+    "metadata_evidence": "consultas mediante Codex verificadas según el responsable",
+    "asset_retrieval": "pendiente de verificación",
+    "resource_isolation": "pendiente de verificación"
+  }
+}
