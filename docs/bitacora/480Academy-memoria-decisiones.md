@@ -2,6 +2,7 @@
 
 **Hackado 2026 · Cuatroochenta / Universitat Jaume I · Grupo F**  
 **Fecha:** 26 de noviembre de 2026  
+**Última revisión:** 28 de noviembre de 2026 — permisos, catálogo, orden configurable y HTML5.  
 **Entrega:** lunes 30 de noviembre de 2026
 
 ## 1. Propósito y alcance
@@ -14,27 +15,49 @@ La solución combina evaluación, aprendizaje social, gamificación, recomendaci
 
 ## 2. Roles, autenticación y acceso
 
-Se establecen tres roles:
+Tres roles globales de capacidad acumulativa; los permisos por curso son independientes.
 
-| Rol | Responsabilidad principal |
+| Rol | Responsabilidad |
 | --- | --- |
-| Administrador | Gestión de la plataforma y ejecución manual de la recalibración del modelo predictivo. |
-| Docente | Gestión de sus cursos, vídeos, preguntas y evaluaciones; participación y supervisión de los foros; seguimiento individual de sus alumnos. |
-| Alumno | Acceso a cursos, contenidos, evaluaciones, recomendaciones, foros y perfil de progreso y reputación. |
+| Alumno | Aprender en cursos concedidos y consultar progreso/reputación. |
+| Docente | Capacidades de alumno más edición, publicación y gestión de cursos asignados y seguimiento de sus alumnos. |
+| Administrador | Capacidades anteriores cuando tiene asignación del recurso, más gestión de roles, cursos, permisos y recalibración. |
 
-- El despliegue incluirá cuentas de demostración preconfiguradas para administrador (`admin`) y docente (`docente`), generadas mediante un proceso de inicialización o *seeding*.
-- Las cuentas nuevas serán de alumno por defecto. Se contempla el registro por correo electrónico y la incorporación de Google OAuth si resulta viable para la entrega.
-- Los permisos deben aplicarse en el servidor. La autorización interna para acceder a un curso o sus recursos no dependerá exclusivamente de la interfaz ni del proveedor audiovisual.
-- Se propusieron las credenciales `admin/admin` y `docente/docente` para facilitar la demo. En un despliegue público las contraseñas deberán configurarse de forma segura o limitarse a un entorno aislado; no se publicarán credenciales privilegiadas triviales.
+- El seeding crea inicialmente una cuenta admin y una docente; las nuevas cuentas son alumno por defecto. Puede haber varios administradores/docentes; Google OAuth sigue opcional.
+- Solo el administrador cambia roles, crea recursos de curso y concede/retira lectura y edición por usuario y curso. Puede asignarse edición a sí mismo. Promover a docente no otorga cursos; puede aprender en uno y editar otro, sin duplicar cuenta. Edición incluye lectura y gestión, no permite autoasignación ni conceder accesos.
+- La concesión de lectura simula una compra; guardar fecha de concesión, sin dinero, facturación, pasarela ni transacción. Revocación impide el acceso salvo otro permiso válido, sin borrar historial automáticamente.
+- Como criterio de seguridad propuesto, degradar rol invalida capacidades incompatibles; impedir dejar la plataforma sin administrador. Los permisos se verifican en servidor por interfaz y API. No se requiere CRUD general de cuentas.
+- Contraseñas de demostración en variables de entorno; no publicar credenciales privilegiadas triviales. El acceso interno no protege URLs públicas externas.
 
 ## 3. Cursos y contenidos audiovisuales
 
-- Los docentes organizan y publican sus cursos, enlazan los vídeos correspondientes y preparan el material de evaluación.
-- Los cursos demostrativos podrán componerse de vídeos externos de YouTube, reproducidos mediante su integración autorizada.
-- La integración audiovisual estará desacoplada del proveedor concreto para permitir incorporar otros servicios en el futuro. YouTube será el proveedor de la demostración.
-- La plataforma gestionará metadatos, organización de cursos, permisos, evaluaciones y telemetría, no los archivos audiovisuales pesados.
-- El piloto controla el acceso a los recursos dentro de 480Academy; no implementará protección propia del vídeo alojado externamente frente a accesos directos fuera de la plataforma.
-- Se contempla un curso de bienvenida disponible desde el primer acceso, dedicado a explicar el funcionamiento de 480Academy. Su producción audiovisual queda condicionada a los recursos disponibles; no bloquea la entrega.
+- El administrador crea el recurso y asigna edición; el docente autorizado organiza, edita y publica cursos, temas, vídeos y evaluaciones. Alumnos acceden a cursos publicados con lectura concedida; gestores pueden editar borradores.
+- Vídeos externos autorizados con reproductor HTML5 propio, no YouTube. Guardar enlaces, atribución y metadatos, no archivos audiovisuales pesados; proveedor desacoplado. Véase [anexo](480Academy-anexo-videos-demostrativos.md).
+- Curso plano: vídeos directamente bajo el curso. Curso temático: temas con vídeos. Configuración de adaptación independiente por lista:
+
+| Estructura | Lista | Configuración |
+| --- | --- | --- |
+| Plano | Vídeos del curso | Interruptor propio |
+| Temático | Temas | Interruptor del temario |
+| Temático | Vídeos de cada tema | Interruptor independiente por tema, sin herencia obligatoria |
+
+Modo fijo: todos los elementos en orden canónico, incluyendo iniciados y vistos; ordinal generado por la interfaz antes del título, sin cambiar al marcar como visto. Modo adaptativo: sin ordinales incluso en respaldo; último pendiente iniciado primero (o su tema), después pendientes por interés y vistos/completados al final; si no hay señales suficientes, orden canónico entre pendientes. Recalcular al acceder y al completar/marcar, con desempates estables. El docente conserva el orden canónico y puede alternar modos sin modificar títulos ni posiciones almacenadas. En ambos modos el alumno puede saltar libremente, sin prerrequisitos. El editor siempre muestra la secuencia canónica. En el dossier se explicará que los títulos no deben incluir prefijos numéricos de orden. Valor inicial propuesto: fijo en listas nuevas; seed con ambos modos y combinaciones mixtas.
+
+- Bienvenida obligatoria desde registro, con descripción/tutorial textual y foro general, incluso sin temas, vídeos o evaluaciones. Lectura automática para todos; edición asignada por el administrador. Vídeo tutorial opcional.
+
+### 3.1. Lista unificada de cursos
+
+| Prioridad | Cursos | Orden interno |
+| --- | --- | --- |
+| 1 | Cursos con edición asignada, incluso borradores | Último acceso descendente; no visitados o empatados por publicación descendente (creación para borradores); ID estable |
+| 2 | Bienvenida no visitada | Acceso automático; primera entre los cursos no gestionados |
+| 3 | Cursos con lectura ya visitados, incluida bienvenida tras visitarla | Último acceso descendente; ID estable |
+| 4 | Cursos concedidos aún no visitados | Interés estimado descendente si hay señales suficientes; fecha de concesión descendente como respaldo y desempate; ID estable |
+| 5 | Cursos publicados sin acceso | Interés estimado descendente; publicación descendente como respaldo/desempate; ID estable |
+
+Una sola lista desplazable, sin secciones ni duplicados. Los niveles no se mezclan. La bienvenida se integra en el historial después de visitarla; los cursos gestionados siempre tienen prioridad. Se adopta la última formulación del 28/11: interés entre concedidos no visitados cuando haya señales, y fecha de concesión (equivalente a compra simulada) como respaldo. No se inventan puntuaciones.
+
+Cursos bloqueados visualmente diferenciados; solo abren mensaje de compra simulada, no contenidos ni registro de visita. El administrador concede lectura; no hay transacción. La experiencia educativa prevalece sobre la recomendación comercial.
 
 ## 4. Evaluación formativa
 
@@ -54,7 +77,7 @@ Se incorporarán preguntas breves de atención y comprensión asociadas a segmen
 - La participación será voluntaria. Las preguntas aparecerán como ventanas emergentes sin detener ni bloquear la reproducción del vídeo; no se exigirá responder para continuar aprendiendo. Los puntos de aparición serán configurables según la duración del vídeo.
 - Los bancos de preguntas se organizan por vídeo, segmento o tema, de forma que puedan reutilizarse y ampliarse de manera acumulativa. En cada aparición se seleccionará aleatoriamente una pregunta del banco correspondiente.
 - La IA podrá generar las preguntas de antemano, evitando generar innecesariamente un nuevo conjunto por cada reproducción. El docente podrá revisarlas y corregirlas.
-- Las preguntas se presentan en la plataforma, separadas del archivo audiovisual externo.
+- Las preguntas se presentan separadas del archivo externo: tarjeta transparente desde derecha si vídeo/dispositivo horizontales, desde abajo si ambos verticales; fuera del vídeo si difieren. Gestos hacia borde ocultan y el inverso recupera la última pendiente; feedback y ocultación automática al responder. No redimensionar ni pausar; pantalla completa del contenedor con preguntas cuando compatible, nativa exclusiva las suspende. DC §6.1–6.3; no registrar inclinación.
 - Los aciertos pueden aportar reputación simbólica; los errores y las omisiones no penalizan.
 - Cada vídeo tendrá un máximo de reputación obtenible por sus preguntas. Al repetirlo, el alumno podrá conseguir los puntos que le falten hasta alcanzar ese máximo, pero no acumular reputación indefinidamente mediante nuevas reproducciones.
 - Las respuestas son señales complementarias de actividad y comprensión, no pruebas concluyentes de atención durante toda la reproducción.
@@ -81,10 +104,10 @@ El foro será el espacio de interacción entre alumnos, docentes e IA, evitando 
 
 ## 7. Recomendación de itinerarios
 
-Se implementará un recomendador determinista, independiente del modelo predictivo de aprendizaje.
+El recomendador determinista independiente del modelo predictivo estima interés y ordena los cursos concedidos no visitados y bloqueados dentro de sus grupos (§3.1), además de listas con adaptación habilitada (§3).
 
-- Se considerarán las competencias asociadas a los cursos, su dificultad, los conocimientos previos y los intereses del alumno.
-- Las recomendaciones orientarán al alumno hacia contenidos adecuados a su perfil y sus objetivos.
+- Considerar competencias, dificultad, conocimientos previos, intereses, progreso, evaluaciones e interacciones pertinentes disponibles; respaldo por concesión/publicación u orden canónico. No inventar interés ni presentarlo como garantía.
+- Las recomendaciones no alteran las prioridades de cursos gestionados, accesos recientes ni permisos; no imponen compras.
 - La navegación será libre. Las recomendaciones no constituyen prerrequisitos obligatorios ni bloquean cursos.
 - El administrador podrá gestionar las notificaciones comerciales por correo electrónico destinadas a recomendar cursos a los alumnos.
 
@@ -94,7 +117,7 @@ Se implementará un recomendador determinista, independiente del modelo predicti
 
 La plataforma recogerá métricas propias para superar las limitaciones de un indicador binario de vídeo completado.
 
-Se contemplan, según las capacidades del reproductor y del navegador:
+Se contemplan, según las capacidades del reproductor HTML5 y navegador, sin API de YouTube ni lecturas de sensores de orientación:
 
 - Progreso y segmentos efectivamente reproducidos, finalización, pausas, saltos, repeticiones y velocidad de reproducción.
 - Tiempo de permanencia, inactividad y visibilidad de la página, interpretados en su contexto.
@@ -155,17 +178,17 @@ La plataforma se diseña teniendo en cuenta que sus futuros usuarios pueden ser 
 
 - Se contempla Vercel Hobby como opción de despliegue para la maqueta, sujeto a sus condiciones de uso aplicables. No se establece como proveedor obligatorio ni como arquitectura definitiva.
 - Se almacenarán perfiles, cursos, evaluaciones, foros, reputación y métricas en los servicios de datos que se seleccionen; los vídeos permanecen en el proveedor externo.
-- Se preparará un script o proceso de *seeding* que genere datos sintéticos de uso y permita demostrar los flujos de analítica y los distintos patrones de comportamiento. Se incluirán casos contrastantes y ambiguos, sin presentar las asociaciones sintéticas como evidencia empírica.
+- Se preparará seeding con cursos del anexo, bienvenida, permisos diferenciados, curso bloqueado/adquirido simulado, docente que aprende en otro curso, listas fijas/adaptativas mixtas y datos sintéticos contrastantes, sin presentarlos como evidencia empírica.
 - El entorno de demostración prevé menos de 100 usuarios y prioriza funcionalidad, simplicidad y coste reducido.
 - La escalabilidad comercial y las decisiones definitivas de explotación quedan fuera del alcance inmediato.
 
 ## 12. Flujos prioritarios de demostración
 
-1. Acceder como alumno, explorar un curso, reproducir un vídeo y responder voluntariamente a una pregunta de atención.
+1. Registrar alumno → bienvenida/foro → catálogo bloqueado y mensaje de compra → concesión administrativa → curso, vídeo y pregunta voluntaria.
 2. Realizar evaluaciones, observar el progreso y consultar reputación, logros y recomendaciones.
 3. Publicar una consulta o contribución en el foro y mostrar la interacción o moderación asistida por IA.
-4. Acceder como docente, gestionar contenido y preguntas, revisar contribuciones y consultar los informes predictivos individuales de sus alumnos.
-5. Acceder como administrador y ejecutar una recalibración del modelo con los datos demostrativos.
+4. Promover cuenta a docente, asignar edición de otro curso y comprobar prioridad/permisos; editar contenido, configurar modos fijo/adaptativo, preguntas, contribuciones e informes.
+5. Administrador: asignar/retirar roles y permisos, crear recurso y asignar edición; recalibrar modelo con datos demostrativos.
 6. Mostrar el flujo de certificación propia mediante URL y, si se incorpora, su extensión blockchain.
 
 Los escenarios de demostración orientan la implementación y no convierten las mejoras opcionales en condiciones de aceptación. Los datos sintéticos prueban el funcionamiento del piloto, no la precisión del modelo ante alumnos reales ni una mejora educativa efectiva.

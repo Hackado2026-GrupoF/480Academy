@@ -2,14 +2,14 @@
 
 **Hackado 2026 · Cuatroochenta / Universitat Jaume I · Grupo F**  
 **Fecha:** 26 de noviembre de 2026  
-**Última revisión:** 27 de noviembre de 2026 — coherencia funcional, prioridades y dependencias tras las convenciones UI/UX  
+**Última revisión:** 28 de noviembre de 2026 — catálogo unificado, gestión de roles y recursos, orden por lista y HTML5.  
 **Entrega:** lunes 30 de noviembre de 2026
 
 ## 1. Propósito
 
 Este documento traduce las decisiones de [480Academy-memoria-decisiones.md](480Academy-memoria-decisiones.md) y [480Academy-design-conventions.md](480Academy-design-conventions.md) a historias de usuario con criterios de aceptación y prioridad. Sirve para repartir el trabajo y para comprobar cuándo cada funcionalidad está terminada.
 
-La revisión del 27/11 conserva los identificadores HU-01 a HU-35 y añade historias para modelar los bucles del alumno, docente y administrador. Las convenciones UI/UX son la propuesta de diseño para el piloto, pendiente de revisión del grupo y refinamiento en Stitch. Los detalles exploratorios no se convierten en requisitos obligatorios. Las prioridades atienden a los flujos de demostración y al plazo. La revisión de dependencias conserva HU-01 a HU-47 y añade HU-48 para hacer explícita la capacidad de cálculo predictivo ya acordada. Las prioridades pueden refinarse antes del bootstrap sin eliminar las dependencias mínimas.
+Se conservan HU-01 a HU-48 y se añaden HU-49 a HU-52 para configuración de orden, roles, permisos y compra simulada. Bienvenida pasa a imprescindible como recurso textual y foro; vídeo opcional. Se reconcilia el reproductor HTML5. Prioridades sujetas a validación del grupo y refinamiento en Stitch.
 
 Formato de cada historia:
 
@@ -33,10 +33,10 @@ La columna «Ref.» indica la sección de origen de cada historia: las referenci
 | HU-02 | Iniciar sesión y acceder según el rol | Usuario | Imprescindible | §2; DC §3, §9–10 |
 | HU-03 | Cuentas de demostración preconfiguradas | Equipo | Imprescindible | §2, §11 |
 | HU-04 | Registro e inicio de sesión con Google | Visitante | Opcional | §2 |
-| HU-05 | Crear y publicar un curso con vídeos | Docente | Imprescindible | §3; DC §5.1, §9 |
+| HU-05 | Editar y publicar un curso asignado con vídeos | Docente | Imprescindible | §3; DC §5.1, §9 |
 | HU-06 | Explorar cursos y ver su contenido | Alumno | Imprescindible | §3, §12; DC §5.1 |
 | HU-07 | Reproducir un vídeo dentro de la plataforma | Alumno | Imprescindible | §3; DC §6.1 |
-| HU-08 | Curso de bienvenida | Alumno | Opcional | §3; DC §5.1 |
+| HU-08 | Curso de bienvenida y foro general | Alumno | Imprescindible | §3; DC §5.1 |
 | HU-09 | Responder preguntas emergentes durante el vídeo | Alumno | Imprescindible | §4.2; DC §6.2 |
 | HU-10 | Gestionar bancos de preguntas de los vídeos | Docente | Imprescindible | §4.2; DC §9 |
 | HU-11 | Generar preguntas con IA y revisarlas | Docente | Deseable | §4.2; DC §9, §11 |
@@ -51,7 +51,7 @@ La columna «Ref.» indica la sección de origen de cada historia: las referenci
 | HU-20 | Supervisar y moderar los foros | Docente | Deseable | §2, §5; DC §8–9 |
 | HU-21 | Consultar reputación, nivel e insignias | Alumno | Imprescindible | §6; DC §5, §7 |
 | HU-22 | Insignias asociadas a cursos | Alumno | Opcional | §6 |
-| HU-23 | Recibir recomendaciones de cursos | Alumno | Imprescindible | §7; DC §11 |
+| HU-23 | Recibir recomendaciones de cursos en la lista unificada | Alumno | Imprescindible | §7; DC §5.1, §11 |
 | HU-24 | Indicar mis intereses | Alumno | Imprescindible | §7; DC §7, §11 |
 | HU-25 | Gestionar correos comerciales de recomendación | Administrador | Opcional | §7 |
 | HU-26 | Consultar mi progreso y desempeño | Alumno | Imprescindible | §8.3, §12; DC §5.3, §7 |
@@ -67,7 +67,7 @@ La columna «Ref.» indica la sección de origen de cada historia: las referenci
 | HU-36 | Navegar mediante el menú contextual | Usuario | Imprescindible | DC §3–4, §12 |
 | HU-37 | Retomar y marcar contenidos como vistos | Alumno | Imprescindible | DC §5.2–5.3, §6.1 |
 | HU-38 | Activar o desactivar las preguntas de atención | Alumno | Imprescindible | DC §4, §6.2 |
-| HU-39 | Encontrar el siguiente contenido mediante ordenación adaptativa | Alumno | Imprescindible | §7; DC §5.2, §11 |
+| HU-39 | Navegar contenidos con orden fijo o adaptativo | Alumno | Imprescindible | §3, §7; DC §5.2, §11 |
 | HU-40 | Encontrar las conversaciones activas del foro | Usuario del curso | Imprescindible | DC §8 |
 | HU-41 | Gestionar mis datos personales y preferencias | Alumno | Deseable | DC §4, §7 |
 | HU-42 | Gestionar mis cursos desde la experiencia común | Docente | Imprescindible | DC §3–4, §9 |
@@ -77,8 +77,12 @@ La columna «Ref.» indica la sección de origen de cada historia: las referenci
 | HU-46 | Investigar patrones de aprendizaje de forma puntual | Administrador | Deseable | §8.2; DC §10–11 |
 | HU-47 | Consultar el historial técnico del modelo predictivo | Administrador | Deseable | DC §10–11 |
 | HU-48 | Generar estimaciones individuales con el modelo almacenado | Docente | Imprescindible | §8.1–8.3, §11; DC §9–11 |
+| HU-49 | Configurar modo de orden de cada lista | Docente | Imprescindible | §3; DC §5.2, §9 |
+| HU-50 | Gestionar roles globales | Administrador | Imprescindible | §2; DC §10 |
+| HU-51 | Crear recursos y asignar permisos por curso | Administrador | Imprescindible | §2–3; DC §10 |
+| HU-52 | Consultar curso bloqueado y simular adquisición | Alumno | Imprescindible | §3.1; DC §5.1 |
 
-Total: 48 historias (33 imprescindibles, 9 deseables, 6 opcionales).
+Total: 52 historias (38 imprescindibles, 9 deseables, 5 opcionales).
 
 ## 3. Historias de usuario
 
@@ -92,17 +96,17 @@ Total: 48 historias (33 imprescindibles, 9 deseables, 6 opcionales).
 - [ ] Toda cuenta nueva recibe el rol de alumno; el usuario no puede elegir otro rol.
 - [ ] No se puede registrar dos veces el mismo correo.
 - [ ] Solo se piden los datos necesarios para usar la plataforma (minimización de datos).
-- [ ] En el entorno de demostración, una cuenta nueva puede acceder al menos a un curso demostrativo mediante la provisión mínima de acceso definida en HU-06 y HU-35; no se exige realizar un pago.
+- [ ] Toda cuenta nueva recibe lectura automática de bienvenida (HU-08); demás cursos por concesión HU-51, sin pagos.
 
 #### HU-02 · Iniciar sesión y acceder según el rol — Imprescindible
 
-**Como** usuario registrado, **quiero** iniciar sesión **para** acceder a las funciones de mi rol.
+**Como** usuario registrado, **quiero** acceder según capacidades y permisos **para** aprender o gestionar recursos desde la misma cuenta.
 
-- [ ] Tras iniciar sesión, el alumno llega directamente a «Mis cursos», el docente accede a su experiencia común enriquecida y el administrador tiene acceso a su panel adicional (HU-44).
-- [ ] Los permisos se comprueban en el servidor, no solo ocultando botones en la interfaz.
-- [ ] Un alumno que llama directamente a una ruta o API de docente o administrador recibe un error de acceso.
-- [ ] Un docente solo puede gestionar cursos de los que sea propietario o gestor autorizado y consultar los alumnos asociados a esos cursos.
-- [ ] Un administrador propietario o gestor autorizado de un curso dispone en él de las mismas capacidades docentes; el acceso al panel de plataforma no sustituye la comprobación de permisos sobre cada recurso.
+- [ ] Todos llegan a «Mis cursos»; administrador tiene panel HU-44.
+- [ ] Roles globales alumno/docente/administrador acumulativos en capacidad; un docente puede tener lectura de un curso y edición de otro. Un rol global no concede automáticamente recursos.
+- [ ] Servidor comprueba lectura o edición válida por recurso en cada operación; edición requiere rol docente/administrador y asignación explícita. Informes solo de cursos gestionados.
+- [ ] Rechazar acceso directo sin permiso, autoasignación o cambio de rol por no administrador. Solo administrador utiliza HU-50/HU-51.
+- [ ] Revocaciones y cambios de rol se aplican en servidor; lectura independiente sigue vigente si se pierde edición. Administrador no asignado no recibe automáticamente acceso a contenidos privados.
 
 #### HU-03 · Cuentas de demostración preconfiguradas — Imprescindible
 
@@ -121,47 +125,45 @@ Total: 48 historias (33 imprescindibles, 9 deseables, 6 opcionales).
 
 ### Épica 2 · Cursos y contenidos
 
-#### HU-05 · Crear y publicar un curso con vídeos — Imprescindible
+#### HU-05 · Editar y publicar un curso asignado con vídeos — Imprescindible
 
-**Como** docente, **quiero** crear un curso organizado en temas o en una lista directa de vídeos de YouTube **para** ofrecer formación a mis alumnos.
+**Como** docente, **quiero** organizar y publicar los cursos que me asigna el administrador **para** ofrecer formación.
 
-- [ ] Puedo crear un curso con título, descripción, competencias asociadas y dificultad.
-- [ ] Puedo añadir temas y vídeos a cada tema o crear un curso plano con vídeos directamente en el curso, con título, descripción y enlace de YouTube.
-- [ ] Puedo establecer y modificar el orden original de los temas y vídeos, editar sus metadatos y sustituir un enlace de vídeo. El orden adaptativo de un alumno nunca modifica ese orden original.
-- [ ] Puedo editar el curso y publicarlo o despublicarlo; los alumnos solo ven los cursos publicados.
-- [ ] La plataforma guarda solo metadatos y enlaces, nunca los archivos de vídeo.
+- [ ] Edito título, descripción, competencias y dificultad de curso creado/asignado mediante HU-51; no puedo autoasignarme cursos.
+- [ ] Añado temas y vídeos o vídeos directamente bajo curso plano, con título, descripción, URL multimedia externa autorizada, ficha, autor y licencia.
+- [ ] Modifico orden canónico, metadatos y enlaces; la adaptación HU-49 no altera el orden original.
+- [ ] Publico/despublico cursos asignados; alumnos solo acceden a publicados, gestores editan borradores.
+- [ ] Guardar solo metadatos y enlaces, nunca archivos de vídeo.
 
 #### HU-06 · Explorar cursos y ver su contenido — Imprescindible
 
-**Como** alumno, **quiero** explorar los cursos disponibles y ver sus temas **para** elegir qué aprender.
+**Como** usuario, **quiero** una lista única de cursos disponibles y bloqueados **para** aprender, gestionar o descubrir formación.
 
-- [ ] «Mis cursos» muestra los cursos a los que tengo acceso, mediante tarjetas verticales ordenadas por último acceso descendente; al volver tras abrir otro curso, este aparece primero. Los cursos sin acceso previo tienen un desempate estable.
-- [ ] Puedo consultar el catálogo y las recomendaciones desde la navegación global; no se mezclan los cursos sin acceso con «Mis cursos» ni se exige implementar pagos en el piloto.
-- [ ] El acceso se comprueba por curso en servidor. Para la demo se habilita al menos un curso publicado de ejemplo para las cuentas de alumno nuevas y se preparan accesos para los alumnos sintéticos; no se requiere un sistema comercial de matriculación.
-- [ ] La pantalla de un curso muestra sus temas o, si es plano, sus vídeos directamente, sin un nivel artificial para cada vídeo. Dentro de un tema se muestran sus vídeos.
-- [ ] Las tarjetas presentan título y estado/progreso útil sin numeración pedagógica visible al alumno. El acceso a continuar se integra en la navegación del contenido (HU-37 y HU-39).
-- [ ] La navegación es libre: ningún curso queda bloqueado por prerrequisitos.
-- [ ] Todas las pantallas se usan cómodamente desde el móvil.
+- [ ] Una sola lista vertical desplazable, sin secciones ni duplicados, con grupos de prioridad: 1) edición asignada, 2) bienvenida no visitada, 3) lectura ya visitados, 4) concedidos sin visitar, 5) publicados sin acceso.
+- [ ] Gestionados y visitados: último acceso descendente; gestionados no visitados o empatados por publicación descendente (creación para borradores); ID estable. Bienvenida visitada sigue historial ordinario.
+- [ ] Concedidos sin visita y bloqueados: interés HU-23 si suficiente; respaldo/desempate por concesión y publicación respectivamente, descendentes, luego ID estable. No cruzar grupos.
+- [ ] Bloqueados visual y semánticamente diferenciados; solo mensaje HU-52, no acceso ni registro de visita. Borradores solo para gestores.
+- [ ] Curso autorizado muestra temas o vídeos directamente si plano; título, progreso y ordinal según HU-39/HU-49.
+- [ ] Libre navegación, sin prerrequisitos, usable en móvil. Bienvenida funciona sin vídeos ni temas.
 
 #### HU-07 · Reproducir un vídeo dentro de la plataforma — Imprescindible
 
-**Como** alumno, **quiero** ver los vídeos del curso dentro de 480Academy **para** aprender sin salir de la plataforma.
+**Como** alumno, **quiero** ver vídeos dentro de 480Academy **para** aprender sin salir.
 
-- [ ] El vídeo se reproduce con la integración autorizada de YouTube (reproductor embebido).
-- [ ] La pantalla del vídeo muestra su título y descripción.
-- [ ] El código del reproductor está desacoplado del proveedor, de modo que se pueda añadir otro servicio sin cambiar el resto de la aplicación.
-- [ ] Solo los usuarios con acceso al curso pueden abrir sus vídeos desde la plataforma.
-- [ ] Puedo reproducir vídeos horizontales y verticales sin deformar ni recortar involuntariamente su imagen; en móvil vertical un vídeo horizontal utiliza el ancho disponible y se coloca encima de la interfaz restante.
-- [ ] Al cambiar la orientación o el tamaño de pantalla, el reproductor se adapta conservando el instante, el estado de pausa/reproducción y, cuando proceda, la pregunta pendiente, sin reinicializarse innecesariamente.
-- [ ] La aparición, cierre o desactivación de una pregunta no cambia las dimensiones del reproductor. Los controles de 480Academy no cubren el reproductor de YouTube ni sus controles.
-- [ ] Puedo utilizar la pantalla completa nativa cuando el navegador/proveedor la permita; la navegación y las preguntas de la plataforma se suspenden durante ese modo y la navegación reaparece al salir.
+- [ ] HTML5 propio con archivos externos autorizados, título, descripción y atribución; proveedor desacoplado.
+- [ ] Solo lectura o edición válida permite abrir vídeos desde la plataforma.
+- [ ] Preservar proporción y orientación: horizontal en dispositivo vertical a todo el ancho, vertical en dispositivo horizontal a máxima altura; en coincidente máxima superficie compatible.
+- [ ] Cambios de orientación/tamaño preservan instante, reproducción y pregunta pendiente visible u oculta, sin reinicializar innecesariamente. Preguntas no redimensionan vídeo.
+- [ ] Pantalla completa del contenedor cuando posible, priorizar orientación de vídeo y mantener preguntas compatibles; giro manual si detección/bloqueo no disponible. Nativa exclusiva suspende interfaz propia sin penalización y restaura al salir; no registrar sensores.
 
-#### HU-08 · Curso de bienvenida — Opcional
+#### HU-08 · Curso de bienvenida y foro general — Imprescindible
 
-**Como** alumno nuevo, **quiero** tener disponible un curso de bienvenida desde el primer acceso **para** entender cómo funciona 480Academy.
+**Como** alumno nuevo, **quiero** un curso de bienvenida **para** aprender a usar la plataforma y plantear dudas generales.
 
-- [ ] El curso aparece en el panel de cualquier alumno nuevo.
-- [ ] Si no hay vídeos propios, puede componerse con texto o con vídeos existentes; su ausencia no bloquea la entrega.
+- [ ] Recurso publicado con descripción/tutorial textual y foro general, lectura automática desde registro, sin compra.
+- [ ] Primero entre no gestionados hasta visitarlo; luego historial HU-06.
+- [ ] Puede carecer de temas, vídeos y evaluaciones sin error ni bloqueo.
+- [ ] Administrador asigna edición a docente o a sí mismo (HU-51); gestor edita y puede añadir vídeo luego (HU-05). Producción audiovisual opcional.
 
 ### Épica 3 · Evaluación formativa
 
@@ -169,11 +171,11 @@ Total: 48 historias (33 imprescindibles, 9 deseables, 6 opcionales).
 
 **Como** alumno, **quiero** responder preguntas breves mientras veo un vídeo **para** comprobar si estoy entendiendo el contenido.
 
-- [ ] La pregunta aparece como tarjeta exterior al reproductor en los puntos configurados del vídeo: debajo en móvil vertical y en una zona lateral o inferior previamente disponible en apaisado. No se superpone a YouTube ni provoca un redimensionamiento.
-- [ ] En pantalla completa nativa o cuando no exista espacio exterior compatible, las preguntas se suspenden sin penalización; no se acumula una ráfaga de preguntas al regresar. Se utiliza un único componente de tarjeta para ambas orientaciones.
-- [ ] La pregunta no detiene ni bloquea el vídeo; puedo cerrarla o ignorarla y seguir aprendiendo.
+- [ ] Componente único en puntos configurados: transparente superpuesto desde derecha con ambos horizontales, desde abajo con ambos verticales; si difieren, debajo del horizontal o lateral del vertical, fuera de imagen. No redimensiona ni pausa.
+- [ ] Gesto hacia borde derecho/inferior oculta, inverso recupera última pendiente no respondida; alternativa clic/pulsación/teclado sin interferir con controles o sistema. Conservar última pendiente como criterio operativo propuesto, sin ráfagas.
+- [ ] No detiene ni bloquea vídeo; puedo ocultar o ignorar. En pantalla completa del contenedor disponible si compatible; nativa exclusiva o sin espacio exterior usable suspende sin penalización.
 - [ ] En cada aparición se elige al azar una pregunta del banco correspondiente.
-- [ ] Al responder veo si he acertado.
+- [ ] Feedback inmediato de acierto/error y ocultación automática; no recuperar respondida.
 - [ ] Un acierto suma reputación; un error o una omisión no restan nada.
 - [ ] Cada vídeo tiene un máximo de reputación obtenible. Si repito el vídeo, solo puedo ganar los puntos que me falten hasta ese máximo.
 
@@ -299,8 +301,8 @@ Total: 48 historias (33 imprescindibles, 9 deseables, 6 opcionales).
 **Como** alumno, **quiero** recibir recomendaciones de cursos adecuados a mi perfil **para** saber qué estudiar a continuación.
 
 - [ ] El recomendador es determinista: con los mismos datos y configuración da siempre las mismas recomendaciones, sin llamadas a IA generativa por cada acceso.
-- [ ] Las recomendaciones de cursos son accesibles desde la navegación global y no modifican el orden por último acceso de «Mis cursos». La recomendación dentro de un curso se desarrolla en HU-39.
-- [ ] Tiene en cuenta las competencias y la dificultad de los cursos, mis conocimientos previos y mis intereses (HU-24), cuando estén disponibles. Si faltan intereses o evaluación inicial, emplea las señales conocidas y un orden de respaldo estable; no los sustituye por puntuaciones negativas.
+- [ ] Ordenan solo grupos de concedidos no visitados y publicados bloqueados de HU-06; no se exige catálogo separado ni se alteran gestionados/visitados. Recomendación interna HU-39.
+- [ ] Considera competencias, dificultad, intereses HU-24, conocimientos previos, progreso, evaluaciones e interacciones pertinentes; respaldos HU-06/HU-39 sin señales, sin imputar puntuaciones negativas.
 - [ ] Es independiente del modelo predictivo de aprendizaje.
 - [ ] Las recomendaciones son orientativas: no bloquean ningún curso.
 
@@ -420,10 +422,10 @@ Total: 48 historias (33 imprescindibles, 9 deseables, 6 opcionales).
 
 **Como** miembro del equipo, **quiero** un proceso de *seeding* que genere datos sintéticos **para** demostrar los flujos de analítica sin datos reales.
 
-- [ ] Crea cursos de ejemplo con vídeos de YouTube, bancos de preguntas, tests y hilos de foro; incluye un curso plano y uno con temas para probar ambos recorridos y respuestas anidadas para probar la actividad jerárquica.
-- [ ] Genera estados de contenido pendiente, iniciado y visto (incluido marcado manual) y alumnos con información suficiente e insuficiente para mostrar la ordenación adaptativa y el respaldo en el orden docente. Se procuran ejemplos de vídeo horizontal y vertical según disponibilidad.
+- [ ] Crea cursos del anexo con vídeos externos autorizados, bancos, tests y foro con respuestas anidadas; plano, temático, bienvenida textual/foro, vídeos horizontales y verticales según compatibilidad.
+- [ ] Genera pendiente, iniciado y visto (incluido manual), señales suficientes e insuficientes, listas fijas/adaptativas/mixtas; usuarios con cursos gestionados y otros como alumno, concedidos no visitados y bloqueados.
 - [ ] Crea alumnos ficticios con patrones de comportamiento variados, incluidos casos contrastantes y ambiguos (por ejemplo, vídeo completo con inactividad, o reproducción parcial con repeticiones). Incluye permisos de acceso a cursos, intereses conocidos y ausentes, evaluaciones iniciales/finales con resultados comparables y casos sin evaluación inicial, respuestas valorables en el foro y señales suficientes para ejercitar HU-48 sin utilizar datos reales.
-- [ ] El entorno permite que una cuenta nueva real de demostración acceda a un curso de ejemplo; los datos sintéticos permanecen diferenciados de su actividad real.
+- [ ] Cuenta nueva real accede a bienvenida y ve bloqueados; administrador concede otros cursos y cambia rol. Datos sintéticos diferenciados de actividad real.
 - [ ] Los datos están identificados como sintéticos y no se atribuyen a personas reales.
 - [ ] Con estos datos se puede recalibrar el modelo y ver informes predictivos, incluido el caso de datos insuficientes; permiten comprobar el funcionamiento, no demostrar precisión predictiva ni mejora educativa real.
 
@@ -434,10 +436,10 @@ Total: 48 historias (33 imprescindibles, 9 deseables, 6 opcionales).
 **Como** usuario, **quiero** acceder a las acciones generales y contextuales desde un menú discreto **para** aprovechar el espacio de pantalla y encontrar las funciones cuando las necesito.
 
 - [ ] Un control visible de apertura mediante pulsación normal permite desplegar y cerrar el menú; su interacción es coherente en móvil y escritorio. La dirección visual preferida es un abanico radial; la geometría se refina en Stitch.
-- [ ] En «Mis cursos» puedo acceder a catálogo, perfil y demás funciones globales disponibles; en un curso puedo abrir evaluaciones, foro y progreso; en un vídeo aparecen las acciones de ese contexto.
+- [ ] «Mis cursos» incluye catálogo integrado; acceso a perfil y funciones globales; en curso autorizado, evaluaciones, foro y progreso; en vídeo, acciones contextuales.
 - [ ] Solo aparecen acciones permitidas para mi rol y recurso; elegir una opción recoge el menú. El botón Atrás o un mecanismo equivalente permite volver al contexto anterior.
 - [ ] Abrir un contenido, reproducirlo, reanudarlo y marcarlo como visto son acciones directas. Las listas de contenidos no muestran de forma permanente tarjetas de evaluación ni foro.
-- [ ] El menú no tapa el reproductor ni sus controles y no depende exclusivamente de pulsación prolongada; se puede accionar con teclado y cerrar sin seleccionar una opción.
+- [ ] Menú puede superponerse al reproductor propio sin interferir con controles, tarjeta ni gestos; no depende solo de pulsación prolongada, admite teclado y cierre.
 
 #### HU-37 · Retomar y marcar contenidos como vistos — Imprescindible
 
@@ -445,7 +447,7 @@ Total: 48 historias (33 imprescindibles, 9 deseables, 6 opcionales).
 
 - [ ] Se conserva el último instante de reproducción disponible y puedo continuar un vídeo iniciado y no terminado al volver a él.
 - [ ] Puedo marcar un vídeo como visto aunque no lo haya reproducido por completo en la plataforma. Los vídeos que alcanzan el criterio de finalización automática también aparecen como vistos; el criterio técnico se definirá antes de implementar los tests.
-- [ ] Los vistos pasan al final de su lista, conservan un estado identificable y siguen siendo accesibles. Se distingue internamente el marcado manual del progreso de reproducción (HU-27).
+- [ ] Vistos al final solo en adaptativo; en fijo conservan posición y ordinal. En ambos estado identificable y acceso; marcado manual separado de progreso observado HU-27.
 - [ ] Si el curso tiene temas, la tarjeta del tema muestra el progreso de sus vídeos y permite identificar los temas completados. Como criterio operativo propuesto, un tema está completo cuando todos sus vídeos están vistos.
 - [ ] Puedo abrir cualquier contenido permitido, incluso uno visto o fuera del orden sugerido, sin penalización.
 
@@ -458,17 +460,16 @@ Total: 48 historias (33 imprescindibles, 9 deseables, 6 opcionales).
 - [ ] Cambiar la preferencia no pausa, reinicia ni redimensiona el vídeo, no resta reputación y no condiciona las evaluaciones ni la certificación.
 - [ ] Al reactivarlas se aplican los puntos de aparición correspondientes a la reproducción posterior, sin mostrar de golpe las preguntas omitidas.
 
-#### HU-39 · Encontrar el siguiente contenido mediante ordenación adaptativa — Imprescindible
+#### HU-39 · Navegar contenidos con orden fijo o adaptativo — Imprescindible
 
-**Como** alumno, **quiero** encontrar primero el contenido pendiente que más me conviene estudiar **para** avanzar sin tener que gestionar un itinerario manualmente.
+**Como** alumno, **quiero** distinguir el orden fijo del adaptativo **para** elegir qué estudiar sin restricciones.
 
-- [ ] En un curso plano, los vídeos independientes pendientes se ordenan adaptativamente; en un curso con temas, se ordenan adaptativamente las tarjetas de tema, no los vídeos dentro de cada tema.
-- [ ] En las listas adaptativas, el último contenido iniciado y aún pendiente encabeza la lista (o su tema correspondiente). Tras completarlo, el siguiente pendiente se determina con los datos actuales.
-- [ ] Entre los pendientes de un mismo tema se conserva el orden del docente; si abrí un vídeo fuera de secuencia, puedo reanudarlo sin reordenar algorítmicamente la lista interna. Los vistos o completados permanecen al final.
-- [ ] El recomendador utiliza las señales disponibles pertinentes (competencias, dificultad, intereses, conocimientos previos, progreso y evaluaciones; señales relevantes de interacción cuando proceda). Cuando no hay información suficiente, se utiliza el orden docente entre los pendientes.
-- [ ] Se recalcula al acceder a la lista y al completar o marcar como visto; con iguales entradas y configuración produce el mismo orden y conserva el orden canónico del docente. No modifica el orden de «Mis cursos».
-- [ ] La ordenación es automática y silenciosa: no solicita confirmar sugerencias, no muestra números de orden, puntuaciones ni etiquetas algorítmicas y no impide abrir cualquier contenido permitido.
-- [ ] El cálculo es independiente de la validez del modelo predictivo y no realiza llamadas a IA generativa por acceso. La prueba incluye dos perfiles con distinta prioridad y un caso sin información suficiente.
+- [ ] Cada lista usa HU-49: vídeos de plano, temario, vídeos de cada tema de forma independiente.
+- [ ] Fijo: orden canónico, ordinal consecutivo antes del título; iniciados/vistos no se desplazan, reanudar fuera de orden no altera lista.
+- [ ] Adaptativo: sin ordinales incluso en respaldo; último pendiente iniciado primero (o tema), otros pendientes por interés, vistos/completados al final; orden canónico entre pendientes sin señales suficientes.
+- [ ] Recalcular al acceder y completar/marcar, mismo resultado con iguales entradas y configuración; no alterar canónico. Usa HU-23, no HU-48 ni llamadas generativas por acceso.
+- [ ] Abrir cualquier contenido autorizado en ambos modos; no mostrar puntuaciones ni etiquetas algorítmicas. Ordinal no implica prerrequisito.
+- [ ] Probar dos perfiles con prioridades distintas, falta de señales, plano fijo/adaptativo y temático mixto; volver a fijo recupera orden original.
 
 #### HU-40 · Encontrar las conversaciones activas del foro — Imprescindible
 
@@ -497,8 +498,8 @@ Total: 48 historias (33 imprescindibles, 9 deseables, 6 opcionales).
 
 - [ ] Puedo acceder a mis cursos gestionados y a sus contenidos con los componentes comunes y las acciones adicionales correspondientes a mi permiso.
 - [ ] En la vista de edición se conserva el orden pedagógico original (HU-05); puedo entrar a la gestión de vídeos, preguntas, evaluaciones, foro y seguimiento individual desde el contexto apropiado.
-- [ ] Las opciones de edición y gestión solo están habilitadas para los cursos que poseo o gestiono; un usuario sin permiso no puede realizar la operación ni mediante acceso directo.
-- [ ] Un administrador que posee o gestiona un curso utiliza las mismas vistas y acciones docentes sin un editor duplicado. Se reutilizan las capacidades funcionales de HU-05, HU-10, HU-12 y HU-28; esta historia verifica su integración, no una segunda implementación.
+- [ ] Edición solo en cursos asignados mediante HU-51, sin autoasignación. Cursos gestionados encabezan lista aunque aprenda en otros.
+- [ ] Administrador con edición explícita usa mismas vistas; reutiliza HU-05, HU-10, HU-12, HU-28 y HU-49.
 
 #### HU-43 · Configurar la intervención de IA en el foro — Imprescindible
 
@@ -515,7 +516,7 @@ Total: 48 historias (33 imprescindibles, 9 deseables, 6 opcionales).
 **Como** administrador, **quiero** disponer de un panel adicional con navegación estable **para** gestionar las funciones de plataforma sin depender del recorrido del alumno.
 
 - [ ] Puedo abrir una página de administración exclusiva de mi rol y volver a la experiencia común; otros roles no tienen acceso por interfaz ni por ruta/API directa.
-- [ ] El panel presenta controles estables para la recalibración manual (HU-29) y las funciones de plataforma implementadas; no aplica el orden adaptativo de contenidos a las herramientas administrativas.
+- [ ] Panel presenta recalibración HU-29, roles HU-50 y recursos HU-51; no aplica adaptación a herramientas administrativas.
 - [ ] La interfaz se optimiza para escritorio, conserva identidad visual común y mantiene legibles y accesibles sus operaciones principales en pantallas pequeñas.
 - [ ] El administrador que gestiona un curso puede entrar a sus vistas docentes (HU-42), sin duplicar la edición dentro del panel.
 
@@ -557,6 +558,45 @@ Total: 48 historias (33 imprescindibles, 9 deseables, 6 opcionales).
 - [ ] El resultado se incorpora al informe individual de HU-28. Existe una generación ordinaria con periodicidad semanal por defecto, independiente de HU-30; la consulta de informes y la recalibración manual no dependen de la investigación experimental de HU-46 ni del historial ampliado de HU-47.
 - [ ] La demo verifica que la pipeline se ejecuta con distintos patrones sintéticos, que no depende de una puntuación precargada por alumno y que trata correctamente los datos insuficientes. Las estimaciones y su confianza se identifican como experimentales, no como probabilidades calibradas en población real.
 
+### Épica 13 · Orden configurable y gestión de acceso
+
+#### HU-49 · Configurar modo de orden de cada lista — Imprescindible
+
+**Como** docente con edición asignada, **quiero** activar/desactivar adaptación por lista **para** decidir cómo presentar mi contenido sin limitar la navegación.
+
+- [ ] Plano: interruptor de vídeos; temático: interruptor de temario y uno independiente por tema.
+- [ ] Puedo activar solo determinados temas, independientemente del temario; persistir configuración, aplicar al volver a acceder como alumno.
+- [ ] Editor conserva orden canónico editable; alternar no modifica títulos ni posiciones almacenadas. Ordinal generado solo en fijo; dossier explica títulos sin prefijos.
+- [ ] Valor inicial propuesto fijo; seed mixto. Solo gestor autorizado modifica configuración, también por API.
+
+#### HU-50 · Gestionar roles globales — Imprescindible
+
+**Como** administrador, **quiero** listar/buscar usuarios y asignar rol **para** gestionar capacidades manualmente.
+
+- [ ] Nuevas cuentas alumno; administrador puede asignar alumno/docente/administrador; pueden existir varios administradores.
+- [ ] Mostrar rol vigente y confirmar cambios; rechazar cambios de no administradores por API.
+- [ ] Promoción no concede recursos; degradación invalida edición incompatible y conserva lectura independiente. Como criterio de seguridad propuesto, impedir eliminar último administrador.
+- [ ] Demo: registro, promoción, edición solo tras asignación, rechazo de autoescalada.
+
+#### HU-51 · Crear recursos y asignar permisos por curso — Imprescindible
+
+**Como** administrador, **quiero** crear cursos y conceder/retirar lectura o edición **para** simular compras y gestionar recursos.
+
+- [ ] Creo recurso de curso y asigno edición a docente/administrador, incluido a mí mismo; gestor completa y publica HU-05.
+- [ ] Concedo/revoco lectura por usuario y curso y asigno/retiro edición a cuentas habilitadas. Edición incluye lectura y gestión; puedo aprender en un curso y editar otro. Sin duplicados ni pérdida de lectura independiente al retirar edición.
+- [ ] Mostrar permisos y fecha de concesión, confirmar cambios; bienvenida mantiene lectura automática, edición asignable.
+- [ ] Revocar bloquea operaciones afectadas en servidor, sin borrar progreso automáticamente; no docentes autoasignándose ni gestionando roles/recursos de cuenta.
+- [ ] Probar conceder curso bloqueado, asignar edición, revocar, permisos cruzados y rechazo de acceso directo. Sin dinero, transacción, factura ni pasarela.
+
+#### HU-52 · Consultar curso bloqueado y simular adquisición — Imprescindible
+
+**Como** alumno, **quiero** distinguir cursos no adquiridos **para** descubrir formación sin confundirla con recursos disponibles.
+
+- [ ] Publicados sin acceso aparecen atenuados/bloqueados al final, con etiqueta accesible y orden de interés cuando proceda.
+- [ ] Pulsar abre exclusivamente mensaje de compra requerida y compras no disponibles en piloto; no abre temas, vídeos, foros o pruebas, no registra visita ni concede acceso.
+- [ ] Tras concesión HU-51, mismo curso pasa a grupo disponible sin duplicados; tras revocación vuelve a bloqueado si no queda permiso válido.
+- [ ] No se pide información de pago ni se realizan transacciones.
+
 ## 4. Requisitos no funcionales
 
 Se aplican a todas las historias.
@@ -573,7 +613,7 @@ Se aplican a todas las historias.
 | RNF-08 | Los vídeos permanecen en el proveedor externo; la plataforma no los aloja. | §3, §11 |
 | RNF-09 | Identidad visual y componentes coherentes: wordmark 480Academy en Figtree 700, 480 blanco y Academy rojo #FF4950 sobre negro #141414; tarjetas discretas y reutilizables. Contraste, foco visible, teclado y etiquetas accesibles; WCAG 2.2 AA como objetivo de diseño, no como certificación ya obtenida. | DC §2–4 |
 | RNF-10 | La ordenación y la inferencia ordinaria se ejecutan sin llamadas a IA generativa por acceso; se separan el recomendador determinista y el modelo predictivo experimental. | DC §5.2, §11 |
-| RNF-11 | No se superponen elementos ajenos al reproductor de YouTube ni se redimensiona por preguntas temporales; se preserva el estado al adaptar la orientación. | DC §6 |
+| RNF-11 | HTML5 estable ante preguntas, orientación y pantalla completa; overlays transparentes solo según DC §6, gestos accesibles y controles no obstruidos; sin telemetría de sensores. | DC §6 |
 | RNF-12 | Los estados de carga, error, ausencia de datos y permisos deben ser comprensibles; no presentar resultados ficticios como reales. Evitar desplazamientos inesperados y respetar las preferencias de movimiento reducido cuando existan animaciones. | DC §2, §5, §8, §12 |
 | RNF-13 | Los datos sintéticos y resultados experimentales se identifican como tales en las vistas, informes y demostraciones pertinentes. La ejecución del piloto no acredita eficacia educativa, precisión predictiva ni validez de la confianza ante alumnos reales. | Enunciado §6; §8.2, §11–12; DC §11 |
 
@@ -583,14 +623,14 @@ Las historias siguen la memoria de decisiones y las convenciones de diseño del 
 
 1. **Test por vídeo o test por curso.** Resuelto en la propuesta de diseño: preguntas voluntarias durante el vídeo y tests por curso, accesibles desde el menú contextual; no se añade un test obligatorio por vídeo.
 2. **Reportes de seguimiento al alumno.** Resuelto en la propuesta: progreso y resultados propios, sin predicciones ni telemetría detallada (HU-26, HU-28).
-3. **Base de las recomendaciones.** El diseño amplía el recomendador determinista a unidades dentro de un curso (HU-39), que puede utilizar señales relevantes de interacción sin depender del modelo predictivo; los pesos y el criterio de suficiencia de datos quedan por definir.
+3. **Base de las recomendaciones.** Interés determinista por grupos y listas habilitadas HU-23/HU-39/HU-49, separado del modelo predictivo; pesos y suficiencia pendientes.
 4. **Fecha de despliegue.** Resuelto: la maqueta debe estar operativa antes de la presentación de la segunda jornada del lunes 30 de noviembre.
 5. **Blockchain.** HU-34 depende de que el grupo acepte la propuesta; requiere solicitud y confirmación de datos antes de acuñar. La emisión convencional automática de HU-32 se conserva. Pendiente acordar cómo resolver datos del titular incompletos y rectificaciones de certificados ya emitidos, sin condicionar el certificado convencional a blockchain.
-6. **Finalización y reanudación.** Definir el criterio de visto automático, el tratamiento de varios vídeos iniciados, la reversión de marcado (propuesta deseable) y los desempates estables de listas. El marcado manual no inventa telemetría. En un tema se respeta el orden docente; la reanudación fuera de secuencia no fuerza una reordenación interna.
-7. **Menú, tarjetas y pantalla completa.** Refinar geometría del abanico, áreas de interacción y estados en Stitch; validar las capacidades de YouTube/navegadores. La pulsación prolongada configurable y las tarjetas superpuestas/arrastrables para otros proveedores quedan fuera de las exigencias del piloto.
+6. **Finalización y reanudación.** Definir criterio automático, varios iniciados y reversión. En fijo vistos/iniciados conservan posición; en adaptativo continuación y vistos al final. No inventar telemetría.
+7. **Menú, tarjetas y pantalla completa.** HTML5 y tarjetas superpuestas/exteriores según DC §6; validar navegador, transparencia, geometría, gestos y recuperación; nativa exclusiva suspende interfaz propia.
 8. **Foro.** HU-17 incluye valoración manual mínima y HU-18 la utiliza para decidir si procede intervenir, sin depender de HU-19 ni HU-20. Quedan por concretar el umbral de respuesta útil/correcta, las bonificaciones y los valores/intervalos de intervención. HU-19 conserva su prioridad deseable.
-9. **Panel administrativo.** La configuración visual de integraciones, investigación puntual y detalles del historial son deseables; la integración preconfigurada y la recalibración manual deben poder demostrar los flujos imprescindibles sin ellas. Queda por precisar el alcance de otras funciones de gestión de plataforma/usuarios; no se introduce un CRUD completo de usuarios como requisito nuevo.
-10. **Acceso a cursos.** «Mis cursos» representa los cursos a los que el alumno tiene acceso. El piloto habilita un curso de ejemplo para cuentas nuevas y prepara accesos para los perfiles sintéticos (HU-01, HU-06, HU-35); no incorpora adquisición comercial ni pago.
+9. **Panel administrativo.** Roles, creación/asignación y concesión/revocación imprescindibles HU-50/HU-51. Integraciones, investigación e historial ampliado deseables; no CRUD general ni pagos.
+10. **Acceso a cursos.** Lista única HU-06, bienvenida HU-08 obligatoria, concesión manual y mensaje HU-52. Última formulación: interés entre concedidos no visitados cuando haya señales, concesión como respaldo/desempate; bienvenida arriba hasta visitarla, gestionados siempre primero.
 11. **Modelo predictivo.** HU-48 explicita el cálculo mínimo necesario para HU-28 y HU-29; se mantiene abierta la elección del algoritmo, las señales, el criterio de suficiencia y el método de cálculo de confianza. La investigación avanzada sigue siendo deseable.
 
 
@@ -600,12 +640,12 @@ Los flujos siguientes comprueban que las historias funcionan conjuntamente. No s
 
 | Rol / bucle | Recorrido de demostración | Historias |
 | --- | --- | --- |
-| Alumno · principal | Iniciar sesión → Mis cursos por último acceso → curso plano o tema → retomar vídeo → pregunta voluntaria → visto → lista actualizada → siguiente contenido | HU-02, HU-06, HU-07, HU-09, HU-36 a HU-39 |
+| Alumno · principal | Registro → bienvenida/foro → lista única → compra simulada → concesión → curso → vídeo → pregunta → visto → siguiente | HU-01, HU-02, HU-06 a HU-09, HU-36 a HU-39, HU-51, HU-52 |
 | Alumno · social (apoyo al aprendizaje) | Abrir foro del curso/vídeo → publicar o responder → actividad actualizada en ancestros → respuesta de compañero o IA → reputación | HU-16 a HU-18, HU-21, HU-36, HU-40, HU-43; HU-19 y HU-20 si se implementan |
 | Alumno · evaluación y progresión | Abrir evaluación desde el menú → test inicial voluntario si existe → test final voluntario → resultado/progreso → certificado por URL → recomendaciones | HU-13, HU-14, HU-23, HU-24, HU-26, HU-32, HU-33, HU-36; HU-15 si se implementa |
 | Alumno · auxiliar | Consultar perfil → preferencias/logros → gestión de certificados → revisión y solicitud de acuñación si se aprueba | HU-21, HU-24, HU-32, HU-36, HU-38; HU-41 deseable y HU-34 opcional |
-| Docente | Acceder a cursos gestionados → editar estructura original y vídeos → configurar bancos/tests → consultar alumnos e informes individuales → ajustar gestión/participar en foro | HU-02, HU-05, HU-10, HU-12, HU-17, HU-28, HU-36, HU-42, HU-43, HU-48; HU-11, HU-19, HU-20, HU-30, HU-31 según prioridad |
-| Administrador | Abrir panel exclusivo → lanzar recalibración manual → comprobar estado, versión y última ejecución → volver a experiencia común o gestionar curso propio | HU-02, HU-29, HU-35, HU-42, HU-44, HU-48; HU-45 a HU-47 deseables |
+| Docente | Promoción y asignación → gestionados primero → editar estructura → configurar orden por lista → preguntas/tests → informes → foro | HU-02, HU-05, HU-10, HU-12, HU-17, HU-28, HU-36, HU-42, HU-43, HU-48 a HU-51; HU-11, HU-19, HU-20, HU-30, HU-31 según prioridad |
+| Administrador | Panel → cambiar rol → crear recurso/asignar edición → conceder/revocar lectura → verificar lista/permisos → recalibrar y comprobar versión | HU-02, HU-29, HU-35, HU-42, HU-44, HU-48, HU-50, HU-51; HU-45 a HU-47 deseables |
 
 ### 6.1. Dependencias funcionales de integración
 
@@ -613,12 +653,12 @@ Relaciones mínimas para que los recorridos no queden incompletos. No son un DAG
 
 | Historia o capacidad | Necesita / integra |
 | --- | --- |
-| HU-01, HU-06, HU-35 | Provisión mínima de acceso a cursos demostrativos para cuentas nuevas y sintéticas; HU-02 aplica los permisos. No requiere compras ni gestión completa de usuarios |
-| HU-36, HU-42, HU-44 | HU-02 y comprobación de permisos; HU-42 reutiliza las operaciones de HU-05, HU-10, HU-12, HU-17 y HU-28, y HU-44 da acceso a HU-29 |
-| HU-06, HU-07, HU-37, HU-39 | Modelo común de cursos y contenidos de HU-05, acceso autorizado de HU-02, estado de aprendizaje; HU-39 necesita el marcado/reanudación de HU-37 y reglas deterministas de HU-23, no el modelo predictivo |
+| HU-01, HU-06, HU-08, HU-35, HU-52 | Bienvenida con foro HU-16 y lectura automática; permisos HU-02/HU-51; catálogo HU-05, interés HU-23; mensaje sin pagos y seed de estados contrastantes |
+| HU-36, HU-42, HU-44, HU-50, HU-51 | HU-02 y permisos; HU-44 habilita roles, recursos y HU-29; HU-51 crea recursos y asigna edición HU-05/HU-42; HU-50 habilita roles sin conceder cursos |
+| HU-06, HU-07, HU-37, HU-39, HU-49 | Modelo HU-05, permisos HU-02/HU-51, estado de aprendizaje; HU-49 configura lista; HU-39 usa HU-37 y HU-23, no HU-48 |
 | HU-09, HU-38 | Reproductor HU-07 y banco/puntos de aparición HU-10; HU-11 es una mejora de generación, no requisito para preguntas manuales |
 | HU-13, HU-14, HU-15 | Evaluaciones configuradas en HU-12; HU-14 es imprescindible como capacidad, voluntaria como acción del alumno. No realizar el test inicial u omitir HU-15 no bloquea HU-13, HU-23, HU-39 ni HU-48 |
-| HU-23, HU-24, HU-39 | Datos de cursos HU-05, captura/persistencia mínima de intereses HU-24, progreso y evaluaciones disponibles (HU-26, HU-27, HU-14). No dependen de HU-41, HU-15 ni HU-48; orden de respaldo sin datos suficientes |
+| HU-23, HU-24, HU-39, HU-49 | Cursos HU-05, intereses HU-24, progreso/evaluaciones HU-26/HU-27/HU-14, permisos HU-51 y configuración; respaldo sin señales, independientes de HU-41, HU-15, HU-48 |
 | HU-18, HU-40, HU-43 | Foro HU-16, configuración de intervalo HU-43 para HU-18 y eventos de respuesta humana/IA para HU-40. La ordenación funciona sin IA; HU-40 no necesita esperar a que HU-18 esté implementada para ordenar respuestas humanas |
 | HU-17, HU-18, HU-19, HU-21 | HU-16 y valoración manual mínima de HU-17; HU-18 respeta la condición de resolución y la bonificación única. HU-19 amplía la valoración con IA y HU-20 la moderación, sin bloquear HU-17. HU-21 integra reputación de HU-09 y HU-17; acceso básico sin HU-41 |
 | HU-28, HU-29, HU-48 | HU-48 transforma señales HU-27 y evaluaciones HU-13/HU-14 disponibles, ajusta el modelo a través de HU-29 y genera estimaciones para HU-28. HU-44 da acceso a la recalibración; HU-35 habilita datos para la demo. HU-30 modifica la periodicidad semanal básica y HU-45 a HU-47 amplían el sistema sin bloquearlo |

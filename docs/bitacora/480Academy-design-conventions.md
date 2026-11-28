@@ -2,7 +2,7 @@
 
 **Hackado 2026 · Cuatroochenta / Universitat Jaume I · Grupo F**  
 **Fecha:** 27 de noviembre de 2026  
-**Última revisión:** 28 de noviembre de 2026 — reproducción HTML5, preguntas superpuestas y adaptación a la orientación.  
+**Última revisión:** 28 de noviembre de 2026 — reproducción HTML5, orden configurable, catálogo unificado y permisos.  
 **Entrega:** lunes 30 de noviembre de 2026  
 **Estado:** propuesta de diseño para el piloto, pendiente de refinamiento visual y revisión por el grupo.
 
@@ -74,7 +74,7 @@ La dirección preferida es un botón discreto en una esquina (preferentemente in
 
 | Nivel | Función |
 | --- | --- |
-| Global | Mis cursos, catálogo y recomendaciones, perfil, preferencias, progreso/logros y certificados, según proceda |
+| Global | Mis cursos (incluye catálogo y recomendaciones), perfil, preferencias, progreso/logros y certificados, según proceda |
 | Curso | Temario/contenidos, evaluación inicial/final, foro, progreso y acciones de gestión autorizadas |
 | Vídeo | Acciones relevantes del vídeo, activar/desactivar preguntas de atención y opciones docentes autorizadas |
 
@@ -96,44 +96,41 @@ La comunidad y las preguntas interactivas apoyan el bucle principal; no constitu
 
 ### 5.1. Inicio y estructura de contenidos
 
-Tras iniciar sesión, el alumno llega directamente a **Mis cursos**, una lista vertical de tarjetas de los cursos a los que tiene acceso, ordenada por último acceso (el más reciente primero). No utilizar recomendaciones predictivas para ordenar esta lista. Los cursos aún no iniciados necesitan un desempate estable; el criterio concreto queda para implementación. Si es viable, incluir el curso de bienvenida desde el primer acceso; su producción sigue siendo opcional.
+Todos los usuarios llegan a **Mis cursos**, una única lista vertical desplazable, sin secciones ni duplicados. Un docente puede aprender en unos cursos y editar otros. El administrador dispone además de su panel exclusivo (§10).
 
-Cada tarjeta permite abrir el curso y presenta solo la información útil (título, estado/progreso y, cuando proceda, indicación de continuación). No saturar el inicio con estadísticas, medallas, promociones ni un segundo bloque redundante de «Continuar».
+| Prioridad | Cursos | Orden interno |
+| --- | --- | --- |
+| 1 | Cursos con edición asignada, incluso borradores | Último acceso descendente; no visitados o empatados por publicación descendente (creación para borradores); ID estable |
+| 2 | Bienvenida no visitada | Acceso automático; primera entre los cursos no gestionados |
+| 3 | Cursos con lectura ya visitados, incluida bienvenida tras visitarla | Último acceso descendente; ID estable |
+| 4 | Cursos concedidos aún no visitados | Interés estimado descendente si hay señales suficientes; fecha de concesión descendente como respaldo y desempate; ID estable |
+| 5 | Cursos publicados sin acceso | Interés estimado descendente; publicación descendente como respaldo/desempate; ID estable |
 
-Existen dos estructuras de curso:
+Los niveles no se mezclan. La bienvenida se integra en el historial después de visitarla; los cursos gestionados siempre tienen prioridad. Se adopta la última formulación del 28/11: interés entre concedidos no visitados cuando haya señales, y fecha de concesión (equivalente a compra simulada) como respaldo. No se inventan puntuaciones.
 
-- **Curso con temas:** el curso contiene temas; cada tema contiene varios vídeos.
-- **Curso plano:** el curso contiene directamente vídeos. Cada vídeo funciona como unidad independiente a efectos de ordenación adaptativa; no crear un nivel artificial de tema para un único vídeo.
+Los cursos gestionados tienen una acción o indicador discreto de edición. Los cursos bloqueados se muestran atenuados con contraste y etiqueta accesible; pulsar abre únicamente el mensaje «Para acceder a este curso necesitas adquirirlo. Las compras no están disponibles en esta demostración». No abre contenidos ni registra último acceso. Sin pago, factura ni concesión automática; el administrador concede lectura para simular compra. Los borradores solo son visibles para sus gestores.
 
-Los cursos de ejemplo se compondrán de vídeos externos reutilizables con licencia compatible, reproducibles mediante HTML5. El [anexo de vídeos demostrativos](480Academy-anexo-videos-demostrativos.md) propone cursos de programación, ingeniería, bellas artes, idiomas y ciencias sociales; incluye ejemplos planos y por temas, así como vídeos horizontales y verticales. Son placeholders, no contenidos definitivos del cliente ni una oferta docente validada. Se recomienda probar al menos un curso de cada estructura con datos de demostración.
+El curso de bienvenida es obligatorio desde el registro, con descripción/tutorial textual y foro general, aunque carezca de temas, vídeos y evaluaciones. Lectura automática para todos; edición asignada por el administrador, que puede asignársela a sí mismo o a un docente para añadir vídeos posteriormente. El vídeo tutorial es opcional.
 
-Utilizar el mismo patrón visual de tarjetas verticales para cursos, temas y vídeos. No mostrar numeraciones de orden pedagógico al alumno: el orden original se conserva internamente y puede consultarse y editarse en el modo docente.
+Curso plano: vídeos directamente bajo el curso. Curso temático: temas con listas de vídeos. Mantener el patrón común de tarjetas. El [anexo de vídeos demostrativos](480Academy-anexo-videos-demostrativos.md) propone placeholders externos autorizados, no material definitivo del cliente.
 
-### 5.2. Ordenación dinámica y silenciosa
+### 5.2. Ordenación fija o adaptativa configurable
 
-| Lista | Criterio |
-| --- | --- |
-| Mis cursos | Último acceso, descendente |
-| Temas del curso | Continuación, prioridad adaptativa y completados al final |
-| Vídeos de un curso plano | Continuación, prioridad adaptativa y vistos al final |
-| Vídeos dentro de un tema | Orden docente entre los pendientes, con vistos al final; sin reordenación algorítmica |
-| Hilos y respuestas del foro | Actividad más reciente (véase §8) |
+El docente con edición asignada controla cada lista por separado; la adaptación estima interés mediante el recomendador determinista de §11, no mediante la inferencia experimental de éxito formativo.
 
-En las listas adaptativas:
+| Estructura | Lista | Configuración |
+| --- | --- | --- |
+| Plano | Vídeos del curso | Interruptor propio |
+| Temático | Temas | Interruptor del temario |
+| Temático | Vídeos de cada tema | Interruptor independiente por tema, sin herencia obligatoria |
 
-1. El último contenido iniciado y todavía pendiente tiene prioridad absoluta; en un curso con temas se prioriza el tema correspondiente para facilitar la continuación.
-2. Los demás contenidos pendientes se ordenan por prioridad estimada para ese alumno. Si no existen datos suficientes, se mantiene el orden original definido por el docente.
-3. Los contenidos completados o marcados como vistos pasan al final y siguen accesibles.
+Modo fijo: todos los elementos en orden canónico, incluyendo iniciados y vistos; ordinal generado por la interfaz antes del título, sin cambiar al marcar como visto. Modo adaptativo: sin ordinales incluso en respaldo; último pendiente iniciado primero (o su tema), después pendientes por interés y vistos/completados al final; si no hay señales suficientes, orden canónico entre pendientes. Recalcular al acceder y al completar/marcar, con desempates estables. El docente conserva el orden canónico y puede alternar modos sin modificar títulos ni posiciones almacenadas. En ambos modos el alumno puede saltar libremente, sin prerrequisitos. El editor siempre muestra la secuencia canónica. En el dossier se explicará que los títulos no deben incluir prefijos numéricos de orden. Valor inicial propuesto: fijo en listas nuevas; seed con ambos modos y combinaciones mixtas.
 
-Dentro de un tema con varios vídeos se respeta la secuencia del docente entre los pendientes; no se aplica el recomendador en ese nivel. Si el alumno abrió libremente un vídeo fuera de secuencia, deberá poder reanudarlo sin alterar el orden pedagógico de los demás. La presentación concreta de esa reanudación (por ejemplo, indicación de continuar) se refinará en Stitch.
-
-El orden adaptativo se recalcula al entrar en la pantalla, utilizando la información disponible en ese momento; al completar o marcar un contenido se actualiza el orden correspondiente. No se fija un itinerario inmutable por alumno ni se cambia el orden canónico almacenado del docente. La adaptación no solicita consentimiento en cada sugerencia, no requiere mostrar puntuaciones ni etiquetas algorítmicas y no bloquea la elección de otro contenido.
-
-Como refinamiento propuesto, mantener estable la lista durante la lectura y aplicar transiciones discretas solo cuando el usuario realiza una acción que modifica el estado. Evitar animaciones que distraigan y respetar las preferencias de movimiento reducido.
+No mostrar puntuaciones ni etiquetas algorítmicas. El ordinal es una indicación de secuencia, no una obligación. La lista global sigue §5.1 y los hilos/respuestas se ordenan por actividad (§8). Mantener estable la lista durante la lectura y respetar movimiento reducido.
 
 ### 5.3. Estado de visualización y progreso
 
-El alumno puede marcar un vídeo como visto, incluso si ya conocía el contenido o lo vio fuera de 480Academy. Los vídeos que consten como vistos por reproducción y los marcados manualmente comparten el estado visual de completado y bajan en la lista. Internamente se distinguen la declaración manual y las señales de reproducción efectivamente registradas; no se inventa telemetría ni se infiere automáticamente comprensión. Un tema podrá representar el progreso de sus vídeos y considerarse completado cuando estén completados sus contenidos (criterio operativo propuesto).
+El alumno puede marcar un vídeo como visto aunque ya conociera el contenido o lo viera fuera de 480Academy. Los vistos por reproducción y manuales comparten estado visual: bajan al final solo en listas adaptativas; en las fijas conservan ordinal y posición. Distinguir declaración manual y señales observadas, sin inventar telemetría ni inferir comprensión automáticamente. Un tema podrá considerarse completado cuando todos sus vídeos estén vistos (criterio operativo propuesto).
 
 Se propone permitir desmarcar como visto una unidad, sin borrar el historial real de reproducción. El criterio exacto de finalización automática y la relación de este estado con la métrica de visualización se concretarán antes del bootstrap.
 
@@ -213,10 +210,10 @@ Como propuesta de estabilidad, actualizar la ordenación al acceder o refrescar 
 
 ## 9. Docente: experiencia común enriquecida
 
-El docente utiliza la misma identidad, patrones de navegación y tarjetas dinámicas que el alumno en las vistas comunes. Añade acciones de gestión cuando posee o tiene permiso para gestionar el curso; no necesita una aplicación separada.
+El docente utiliza la misma identidad, patrones y tarjetas que el alumno; tiene capacidades de aprendizaje y edición únicamente sobre cursos asignados por un administrador. No se autoasigna recursos; sus cursos gestionados encabezan la lista única (§5.1).
 
-- Crear, editar, publicar/despublicar cursos, temas y vídeos; sustituir enlaces de vídeo y modificar su orden.
-- En modo de edición, presentar la estructura original y el orden pedagógico, sin reordenación adaptativa del alumno. Reutilizar las vistas comunes en lo posible.
+- Editar y publicar/despublicar cursos asignados, crear y editar sus temas y vídeos, sustituir enlaces y modificar el orden. El administrador crea el recurso de curso y asigna edición; el docente no crea cursos con autoasignación ni concede permisos.
+- En edición, presentar el orden canónico, permitir modificarlo y configurar los interruptores independientes de §5.2; conservar ordinales en el editor. Reutilizar vistas comunes.
 - Gestionar los tests inicial/final y su umbral de superación.
 - En cada vídeo gestionado, ofrecer acceso al banco de preguntas: crear/editar/eliminar, asociar bancos a vídeos, segmentos o temas, configurar intervalos o instantes de aparición y reutilizar/ampliar preguntas sin perder las anteriores.
 - Solicitar a la IA preguntas para poblar o ampliar el banco a partir del contenido disponible por medios autorizados (descripciones, transcripciones o materiales del docente). Revisar antes de aprobar; no generar un nuevo banco en cada reproducción.
@@ -230,18 +227,19 @@ Para la edición de preguntas por segmentos, Stitch puede explorar una línea te
 
 ## 10. Administrador: panel adicional
 
-El administrador puede utilizar la experiencia común y, si es propietario o gestor autorizado de un curso (por ejemplo, el de bienvenida), sus capacidades docentes. Esto no implica que cualquier permiso de edición se conceda únicamente por ocultar o mostrar botones.
+El administrador conserva capacidades de alumno y puede asumir edición explícita de un curso, incluso asignándosela a sí mismo. Puede haber varios administradores. El rol global habilita capacidades pero no concede automáticamente lectura, edición ni informes de todos los cursos.
 
 Además dispone de un panel de administración de plataforma, independiente, de navegación estable y convencional. Priorizar funcionalidad sobre innovación visual; no aplicar por defecto la reordenación dinámica de tarjetas. Puede usar navegación lateral, pestañas, tablas, formularios y gráficas, conservando los colores y tipografía comunes. Diseñar principalmente para PC y adaptar razonablemente a pantallas pequeñas.
 
 Capacidades previstas:
 
-- Gestión de plataforma, usuarios e integraciones de IA; configuración de proveedores/modelos y de las funciones delegadas a cada uno.
+- Gestión imprescindible de cuentas: listar/buscar, asignar rol alumno/docente/administrador, crear recursos de curso y conceder/retirar lectura y edición por usuario y curso. Mostrar permisos vigentes y confirmar cambios; impedir autoasignaciones por no administradores y escaladas por API. Sin pasarela, pago ni facturación.
+- Gestión de integraciones de IA; configuración de proveedores/modelos y funciones delegadas.
 - Acciones manuales para investigar patrones y recalibrar el modelo predictivo; mostrar el estado, la versión y la última ejecución. Diferenciar recalibración de inferencia cotidiana.
 - Métricas técnicas e historial de ejecución del modelo, claramente identificados como experimentales. No introducir por ello informes educativos agregados que quedaron fuera de alcance.
 - Configuración de notificaciones comerciales según las historias y prioridades existentes.
 
-La gestión de credenciales de API debe ser segura en servidor; no presentar secretos en texto claro, ni incorporarlos al frontend, mockups o repositorio. La edición de integraciones, el alcance exacto de gestión de usuarios y las gráficas administrativas son ampliaciones a revisar con las historias de usuario, no motivos para bloquear el flujo imprescindible de recalibración manual.
+La gestión de credenciales de API debe ser segura en servidor; no presentar secretos en claro ni incorporarlos al frontend, mockups o repositorio. La edición de integraciones y gráficas administrativas son ampliaciones; la asignación manual de roles y recursos sí es imprescindible. No se requiere CRUD general de cuentas ni gestión comercial.
 
 ## 11. Personalización, predicción y uso sostenible de IA
 
@@ -249,10 +247,10 @@ Distinguir dos mecanismos independientes que pueden compartir señales de entrad
 
 | Mecanismo | Finalidad | Ejecución |
 | --- | --- | --- |
-| Recomendador determinista | Recomendar cursos y ordenar los temas o vídeos independientes pendientes | Reglas y puntuaciones locales/servidor; sin llamadas a IA generativa por acceso |
+| Recomendador determinista | Estimar interés y ordenar cursos concedidos no visitados y bloqueados, y listas de temas/vídeos con adaptación habilitada | Reglas y puntuaciones locales/servidor; sin llamadas a IA generativa por acceso |
 | Modelo predictivo experimental | Estimar engagement y éxito formativo individual para el docente | Modelo estadístico o de aprendizaje automático almacenado, con inferencia ordinaria sin llamadas a IA generativa |
 
-El recomendador puede utilizar intereses, conocimientos previos, dificultad, competencias, progreso, resultados de preguntas y señales relevantes de interacción. Cuando no tenga información suficiente, conserva el orden docente. No depende de que el modelo predictivo experimental esté validado. Los pesos, variables, reglas y criterio de suficiencia de datos están pendientes de implementación y validación.
+El recomendador puede utilizar intereses, conocimientos previos, dificultad, competencias, progreso, preguntas y señales relevantes de interacción. Sin información suficiente aplica los respaldos de §5.1–5.2. No depende del modelo predictivo experimental. Pesos, variables y suficiencia quedan pendientes.
 
 La IA generativa se utilizará cuando aporte valor: generación anticipada de preguntas, participación/moderación asistida en el foro, interpretación de métricas e investigación puntual de patrones. Las operaciones repetitivas (ordenación, registro de progreso, cálculo de puntuaciones e inferencia de un modelo entrenado) no requieren llamadas generativas. El administrador inicia manualmente la recalibración, que puede utilizar técnicas de aprendizaje automático convencionales y asistencia generativa puntual.
 
@@ -267,9 +265,9 @@ Inventario orientativo (priorizar las historias imprescindibles; agrupar estados
 | Pantalla o estado | Contenido que debe poder apreciarse |
 | --- | --- |
 | Acceso | Inicio de sesión/registro por correo, interfaz móvil; Google solo si se incorpora |
-| Mis cursos | Tarjetas verticales ordenadas por acceso, curso iniciado y sin empezar; entrada al menú |
-| Curso plano | Vídeos pendientes/reanudables y vistos al final, sin numeraciones; menú abierto con evaluación y foro |
-| Curso con temas | Temas dinámicos y progreso; vista interior con vídeos en orden docente |
+| Mis cursos | Lista única: bienvenida, gestionados, visitados, concedidos sin visitar y bloqueados; mensaje de compra simulada y transición tras concesión |
+| Curso plano | Interruptor docente; modo fijo numerado y adaptativo sin números, progreso y reanudación |
+| Curso con temas | Interruptor del temario y por cada tema; combinación mixta y numeración fija frente a adaptación |
 | Vídeo horizontal en dispositivo horizontal | Reproductor amplio; tarjeta transparente superpuesta desde el borde derecho, estados visible y oculto, recuperación hacia el interior |
 | Vídeo horizontal en dispositivo vertical | Reproductor arriba a todo el ancho; tarjeta debajo sin cubrir ni redimensionar el vídeo |
 | Vídeo vertical en dispositivo vertical | Reproductor amplio; tarjeta transparente superpuesta desde el borde inferior, estados visible y oculto, recuperación hacia arriba |
@@ -282,11 +280,11 @@ Inventario orientativo (priorizar las historias imprescindibles; agrupar estados
 | Certificados | Certificado propio, URL verificable y vista de verificación; acuñación explícita solo si se aprueba |
 | Docente | Lista de cursos común, edición de estructura original y vídeo, banco de preguntas, evaluaciones y moderación |
 | Seguimiento docente | Lista de alumnos e informe individual con hechos, predicciones, confianza y datos insuficientes |
-| Administración (PC) | Navegación fija, integraciones y recalibración manual, estado e historial experimental |
+| Administración (PC) | Navegación fija, gestión de roles y permisos por usuario/curso, creación de curso y asignación docente, integraciones y recalibración manual |
 
 Incluir variantes de estado (carga, vacío, error, sin datos, sin permiso, guardado/confirmación) de los componentes imprescindibles cuando sea posible. Los controles que se muestren como funcionales deben corresponder al alcance aprobado o quedar identificados como opcionales.
 
-Validar visualmente las cuatro combinaciones de formato de vídeo y orientación del dispositivo, escritorio y pantalla completa, incluida la estabilidad del reproductor, el contraste de tarjetas sobre imágenes variadas y la convivencia con el menú y los controles. Mostrar también los estados oculto, recuperado y respondido; ninguna pregunta debe forzar la rotación ni un redimensionamiento del vídeo. Mantener los textos de la UI en castellano en el primer tablero; los detalles de layout, espaciado, iconos, miniaturas y microcopy son refinables. No añadir numeraciones visibles al temario del alumno, rankings competitivos, banners promocionales invasivos, chatbots separados ni puntuaciones predictivas para alumnos.
+Validar visualmente las cuatro combinaciones de formato de vídeo y orientación del dispositivo, escritorio y pantalla completa, incluida la estabilidad del reproductor, el contraste de tarjetas sobre imágenes variadas y la convivencia con el menú y los controles. Mostrar también los estados oculto, recuperado y respondido; ninguna pregunta debe forzar la rotación ni un redimensionamiento del vídeo. Mantener los textos de la UI en castellano en el primer tablero; los detalles de layout, espaciado, iconos, miniaturas y microcopy son refinables. Mostrar numeración solo en listas con orden fijo; no añadir rankings competitivos, banners promocionales invasivos, chatbots separados ni puntuaciones predictivas para alumnos.
 
 Flujo principal para comprobar la coherencia del tablero: iniciar sesión → Mis cursos → curso → tema si existe → vídeo → pregunta voluntaria → marcar/completar → lista adaptada → siguiente contenido. Desde el menú contextual se accede a evaluación y foro; desde perfil, a progreso y gestión documental. Incluir el camino de edición docente y el de recalibración administrativa sin inventar otras experiencias.
 
@@ -296,21 +294,21 @@ Sin modificar todavía las historias existentes, registrar los siguientes puntos
 
 | Referencia | Revisión prevista |
 | --- | --- |
-| HU-02, HU-05 | Capacidades comunes y permisos por propiedad/gestión de curso, incluidos administradores que gestionen uno; adaptar enlaces y metadatos audiovisuales al reproductor HTML5 y fuentes autorizadas |
-| HU-06, HU-07, HU-26 | Mis cursos por acceso, cursos planos o con temas, estados visto/manual, reanudación, orientación y estabilidad del reproductor |
-| HU-08 | Curso de bienvenida disponible si se produce; conservar su carácter no bloqueante |
+| HU-02, HU-05, HU-50, HU-51 | Roles y permisos por recurso, creación administrativa, edición asignada y enlaces externos HTML5 |
+| HU-06, HU-07, HU-26, HU-52 | Lista unificada, prioridades, compra simulada, reanudación y estabilidad del reproductor |
+| HU-08 | Bienvenida obligatoria textual y foro; vídeo opcional, edición asignada |
 | HU-09, HU-10, HU-11, HU-38 | Tarjeta única superpuesta o exterior según formato y orientación; transparencia, gestos y recuperación, feedback y ocultación automática, preferencia de preguntas, pantalla completa, edición de segmentos y generación anticipada |
 | HU-35, HU-36, RNF-08, RNF-11 | Actualizar el seeding según el anexo, navegación contextual compatible con overlays, alojamiento externo y estabilidad del reproductor sin restricciones específicas de YouTube |
 | HU-13, HU-14, HU-16 | Acceso contextual a tests y foro, sin desplazar el protagonismo del vídeo |
 | HU-16 a HU-20 | Ordenación por actividad propagada por toda la jerarquía, incluidas intervenciones de IA |
-| HU-23, HU-24 | Recomendación adaptativa de unidades, no solo cursos; orden docente de respaldo y libertad de elección |
+| HU-23, HU-24, HU-39, HU-49 | Interés estimado, respaldos, interruptores por lista y ordinales solo en modo fijo |
 | HU-28, HU-29 | Informes individuales, controles de recalibración y separación de métricas técnicas administrativas |
 | HU-32 a HU-34 | Perfil documental, estados de certificado y confirmación explícita de acuñación opcional |
 | Nuevas historias/RNF | Navegación contextual accesible, edición de perfil/preferencias, configuración segura de integraciones de IA y demás necesidades detectadas en los mockups |
 
 Quedan abiertos el detalle geométrico del menú, la transparencia y dimensiones de las tarjetas, los umbrales de gesto y zonas de recuperación, la compatibilidad de pantalla completa y orientación, el criterio de marcado automático, la reversión de vistos, desempates de ordenación, transiciones, estados vacíos y el algoritmo concreto. Son cuestiones de refinamiento, no nuevos bloqueos para generar el tablero. No dar por consensuadas mejoras opcionales del grupo ni ampliar el alcance sin revisar prioridades.
 
-**Reconciliación documental pendiente (28/11):** actualizar posteriormente la memoria de decisiones (§3, §4.2, §8.1 y §11 según proceda) y las historias de usuario/RNF que aún prescriben YouTube, tarjetas exclusivamente exteriores o suspensión general de preguntas en pantalla completa. Mantener alojamiento externo, preguntas voluntarias y telemetría sin vigilancia intrusiva. Contrastar el cambio con el enunciado, que permite vídeos de YouTube pero no los exige. Esta revisión modifica únicamente las convenciones UI/UX; la gestión de cursos y usuarios se revisará en una intervención posterior.
+**Reconciliación documental (28/11):** memoria e historias se actualizan junto a esta revisión para reflejar HTML5, catálogo unificado, permisos y orden configurable. Pendientes: validación del grupo, tablero de Stitch, pruebas de navegador y especificación de pesos, umbrales y detalles visuales.
 
 ## 14. Memoria de presentación
 
