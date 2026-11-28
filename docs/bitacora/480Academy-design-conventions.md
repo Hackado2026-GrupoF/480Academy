@@ -2,6 +2,7 @@
 
 **Hackado 2026 · Cuatroochenta / Universitat Jaume I · Grupo F**  
 **Fecha:** 27 de noviembre de 2026  
+**Última revisión:** 28 de noviembre de 2026 — reproducción HTML5, preguntas superpuestas y adaptación a la orientación.  
 **Entrega:** lunes 30 de noviembre de 2026  
 **Estado:** propuesta de diseño para el piloto, pendiente de refinamiento visual y revisión por el grupo.
 
@@ -79,7 +80,7 @@ La dirección preferida es un botón discreto en una esquina (preferentemente in
 
 Las evaluaciones y el foro tendrán acceso desde el menú contextual del curso; no se insertarán tarjetas de evaluación en la lista principal de vídeos. En el contexto de un vídeo se facilitará también el acceso al foro correspondiente. Las acciones principales del aprendizaje (abrir contenido, reproducir, continuar, marcar como visto) estarán disponibles directamente donde se necesitan.
 
-El botón y el menú no deben tapar el reproductor ni sus controles. Durante la pantalla completa nativa desaparecen y vuelven al salir. En la vista ordinaria del vídeo se sitúan en espacio de interfaz ajeno al reproductor y a la tarjeta de preguntas.
+En la vista de vídeo, el botón y el menú contextual deben ser discretos y no interferir con los controles de reproducción, la lectura de la tarjeta ni sus gestos. Aprovechar el espacio exterior al vídeo cuando exista; si no existe, se admite superponer el control contextual al reproductor propio sin reservar una franja permanente ni ocultar información necesaria. Evitar la colisión del abanico con la tarjeta de preguntas (en especial en la esquina inferior derecha). En pantalla completa propia, mantener la navegación recogida y mostrar sus controles solo cuando proceda; si se utiliza pantalla completa nativa que no admite la interfaz de 480Academy, la navegación desaparece y vuelve al salir (véase §6.3).
 
 El menú debe poder abrirse mediante pulsación normal, con alternativa accesible por teclado en escritorio. La pulsación prolongada con indicador circular y duración configurable es una idea exploratoria, no un requisito del piloto ni el único mecanismo de acceso. Evitar colisiones con bordes, áreas seguras del dispositivo, desplazamiento y controles nativos. Stitch puede explorar la geometría del abanico y una alternativa de lista compacta si la radial resulta poco usable. No multiplicar confirmaciones ni gestos ocultos.
 
@@ -104,7 +105,7 @@ Existen dos estructuras de curso:
 - **Curso con temas:** el curso contiene temas; cada tema contiene varios vídeos.
 - **Curso plano:** el curso contiene directamente vídeos. Cada vídeo funciona como unidad independiente a efectos de ordenación adaptativa; no crear un nivel artificial de tema para un único vídeo.
 
-Los cursos de ejemplo podrán ser listas de reproducción de YouTube (p. ej., pintura o reglas de Warhammer, escalada o senderismo). No son contenidos definitivos del cliente. Se recomienda probar al menos un curso con temas y otro plano mediante datos de demostración si resulta viable.
+Los cursos de ejemplo se compondrán de vídeos externos reutilizables con licencia compatible, reproducibles mediante HTML5. El [anexo de vídeos demostrativos](480Academy-anexo-videos-demostrativos.md) propone cursos de programación, ingeniería, bellas artes, idiomas y ciencias sociales; incluye ejemplos planos y por temas, así como vídeos horizontales y verticales. Son placeholders, no contenidos definitivos del cliente ni una oferta docente validada. Se recomienda probar al menos un curso de cada estructura con datos de demostración.
 
 Utilizar el mismo patrón visual de tarjetas verticales para cursos, temas y vídeos. No mostrar numeraciones de orden pedagógico al alumno: el orden original se conserva internamente y puede consultarse y editarse en el modo docente.
 
@@ -142,33 +143,45 @@ El progreso visible puede mostrar vídeos/temas completados, calificaciones, evo
 
 ### 6.1. Reproductor responsivo
 
-YouTube es el proveedor de la demostración, integrado mediante su reproductor autorizado. La plataforma no aloja vídeos. Se desacoplará técnicamente el proveedor, pero no se diseñarán ni implementarán interfaces específicas para otros proveedores en el piloto.
+El piloto utilizará un reproductor propio basado en HTML5 con archivos audiovisuales alojados externamente y autorizados para su reutilización. YouTube deja de ser el proveedor de demostración: sus restricciones sobre superposiciones no se trasladarán al diseño del reproductor propio. La plataforma no aloja vídeos; conserva enlaces y metadatos, incluida la atribución y la licencia. El proveedor audiovisual se mantendrá desacoplado de la lógica educativa. Véase el [anexo de vídeos demostrativos](480Academy-anexo-videos-demostrativos.md).
 
-Admitir vídeos horizontales y verticales, preservando la relación de aspecto original y sin recortes involuntarios. En un teléfono en vertical, un vídeo horizontal se presenta arriba, utilizando el ancho disponible; debajo se sitúa la interfaz. En orientación apaisada o pantalla completa, aprovechar al máximo la superficie compatible con el vídeo. No se conoce la orientación de los contenidos del cliente; procurar ejemplos de ambos formatos.
+Admitir vídeos horizontales y verticales, preservando la relación de aspecto original y la orientación correcta de la imagen, sin deformar, recortar ni girar el vídeo para llenar artificialmente la pantalla. En reproducción ordinaria no se obliga al usuario a girar el dispositivo: se maximiza la superficie compatible con el formato y se admite espacio sobrante. En pantallas de escritorio o ventanas redimensionables, aplicar la misma lógica según la relación de aspecto del área disponible.
 
 **El reproductor se adapta al dispositivo, no a la aparición de elementos temporales de la interfaz.**
 
-- Un cambio de orientación o tamaño de ventana puede redimensionar y redistribuir el reproductor.
-- La aparición, cierre o desactivación de una pregunta de atención no debe redimensionarlo.
-- Preservar el instante de reproducción, el estado de pausa/reproducción y, cuando proceda, la pregunta pendiente al cambiar la orientación. Evitar recrear el reproductor innecesariamente.
-- Mantener accesibles los controles originales del proveedor y su pantalla completa nativa. La compatibilidad concreta dependerá del navegador y del reproductor.
+| Formato del vídeo | Orientación del dispositivo o área disponible | Reproductor | Tarjeta de preguntas |
+| --- | --- | --- | --- |
+| Horizontal | Horizontal / apaisada | Máxima superficie compatible, sin reservar una columna permanente para las preguntas | Superpuesta desde el borde derecho, con alta transparencia; se oculta hacia la derecha y se recupera con el gesto inverso |
+| Horizontal | Vertical | Arriba, ocupando todo el ancho disponible y preservando su relación de aspecto | Debajo del vídeo, fuera del reproductor; no cubre la imagen |
+| Vertical | Vertical | Máxima superficie compatible con el vídeo vertical | Superpuesta desde el borde inferior, con alta transparencia; se oculta hacia abajo y se recupera con el gesto inverso |
+| Vertical | Horizontal / apaisada | Intentar ocupar todo el alto disponible, preservando su relación de aspecto | En el espacio lateral sobrante, fuera del reproductor; no cubre la imagen |
+
+- Un cambio de orientación o tamaño de ventana puede redimensionar y redistribuir el reproductor. La aparición, cierre, ocultación, recuperación o desactivación de una pregunta de atención no debe redimensionarlo.
+- Preservar el instante de reproducción, el estado de pausa/reproducción y, cuando proceda, la pregunta pendiente y su estado visible u oculto al cambiar la orientación. Evitar recrear el reproductor innecesariamente.
+- Mantener accesibles los controles de reproducción y utilizar el espacio sobrante para la interfaz cuando exista. Si una ventana excepcionalmente pequeña no permite presentar una pregunta exterior de forma usable, prima la reproducción; no convertirla en una superposición en las combinaciones que deben mantenerla fuera del vídeo.
+- Los controles y las atribuciones del contenido deberán ser accesibles; la compatibilidad efectiva de archivos, formatos y navegadores se comprobará antes del despliegue.
 
 ### 6.2. Tarjeta de preguntas de atención
 
-Utilizar un único componente de tarjeta de preguntas compatible con YouTube:
+Utilizar un único componente de tarjeta, tanto cuando se superpone al vídeo como cuando se sitúa fuera de él. Se adapta su posición y dirección de entrada, no la lógica de preguntas, respuestas ni reputación.
 
-- En vertical, aparece debajo del reproductor; en apaisado, puede aparecer en un espacio lateral o inferior exterior al reproductor si hay espacio reservado desde el principio. En una vista sin ese espacio, no se superpone ni fuerza un redimensionamiento.
-- Mantener la misma estética y comportamiento de tarjeta en ambas orientaciones; adaptar solo su posición y entrada. No colocar capas ajenas sobre el reproductor de YouTube ni interferir con sus controles.
-- En pantalla completa nativa del proveedor, suspender temporalmente las preguntas sin penalización. La navegación vuelve al abandonar ese modo; la gestión exacta de eventos pendientes se concretará sin generar ráfagas de preguntas.
-- Las preguntas aparecen en los puntos configurados, seleccionadas del banco correspondiente. Son voluntarias y no detienen ni bloquean la reproducción. El alumno puede responder, cerrar o ignorar.
-- Proporcionar feedback inmediato de acierto/error y reputación cuando corresponda. Los errores y omisiones no penalizan; respetar el máximo de puntos por vídeo.
-- Permitir activar/desactivar las preguntas desde el menú contextual y conservar la preferencia del alumno.
+- Las tarjetas superpuestas serán discretas y tendrán un alto nivel de transparencia en su fondo para que el alumno pueda seguir viendo lo que ocurre detrás en el vídeo. Mantener el texto, las opciones y los controles legibles sobre fondos audiovisuales variables; ajustar contraste, contornos y opacidad de las superficies de lectura cuando sea necesario. No oscurecer toda la imagen con una capa modal ni interceptar interacciones fuera de la tarjeta. La transparencia concreta, anchura, altura máxima y animaciones se refinarán en Stitch.
+- En vídeo y dispositivo horizontales, la tarjeta entra por el borde derecho. Deslizar hacia la derecha, en dirección a ese borde, la oculta; deslizar en sentido inverso, desde una zona de recuperación próxima al borde derecho hacia el interior, vuelve a mostrar la última pregunta si sigue sin responder.
+- En vídeo y dispositivo verticales, la tarjeta entra por el borde inferior. Deslizar hacia abajo la oculta; deslizar hacia arriba desde una zona de recuperación próxima al borde inferior vuelve a mostrar la última pregunta si sigue sin responder.
+- En orientaciones distintas de vídeo y dispositivo, la tarjeta se muestra fuera de la imagen, debajo o en el espacio lateral según §6.1. Mantener las acciones de ocultar y recuperar sin modificar el tamaño del reproductor.
+- Ocultar no equivale a responder ni a descartar definitivamente la pregunta. Como criterio operativo propuesto, conservar solo la última pregunta pendiente del vídeo durante la reproducción: si llega un nuevo punto de aparición, sustituye a la anterior sin acumular una cola ni provocar una ráfaga al recuperar la tarjeta. No reabrir una pregunta ya respondida mediante el gesto inverso.
+- Los gestos son una vía directa, no la única: ofrecer acciones discretas y accesibles de ocultación y recuperación (pulsación/clic y teclado). Respetar áreas seguras, desplazamiento y gestos del sistema operativo; no capturar indiscriminadamente los bordes físicos de la pantalla ni interferir con la barra de progreso o los controles de reproducción. Respetar las preferencias de movimiento reducido.
+- Las preguntas aparecen en los puntos configurados, seleccionadas del banco correspondiente. Son voluntarias y no detienen ni bloquean la reproducción. El alumno puede responder, ocultar o ignorar.
+- Proporcionar feedback inmediato de acierto/error y reputación cuando corresponda, y ocultar automáticamente la tarjeta tras responder, sin exigir una segunda pulsación. El feedback podrá ser breve y no bloqueante. Los errores y omisiones no penalizan; respetar el máximo de puntos por vídeo.
+- Permitir activar/desactivar las preguntas desde el menú contextual y conservar la preferencia del alumno. Desactivarlas oculta la tarjeta y suspende nuevas apariciones; al reactivarlas no se acumulan preguntas omitidas.
 
-Un modo inmersivo propio que mantenga una zona lateral/inferior estable es una posible distribución del mismo componente, no una obligación de construir un segundo reproductor. Si las restricciones del navegador impiden presentar preguntas en pantalla completa, prima la reproducción.
+### 6.3. Pantalla completa y orientación
 
-**Backlog, fuera del piloto:** estudiar tarjetas semitransparentes superpuestas y arrastrables con otros proveedores que permitan esa interacción. No generar mockups ni dedicar esfuerzo de implementación a esa variante.
-
-Referencia de restricciones: [YouTube API Services — Required Minimum Functionality](https://developers.google.com/youtube/terms/required-minimum-functionality).
+- Al solicitar pantalla completa, el reproductor propio debe ocupar toda la pantalla y aprovechar la orientación correspondiente al formato del vídeo (horizontal o vertical). A diferencia de la vista ordinaria, este modo puede requerir que el usuario gire el dispositivo para obtener la visualización inmersiva. No deformar ni recortar el contenido para forzar el llenado.
+- Cuando el navegador y el dispositivo lo permitan, detectar la orientación/inclinación física y solicitar la orientación de pantalla apropiada durante la pantalla completa. No depender de permisos de sensores para reproducir: si la detección o el bloqueo de orientación no están disponibles, conservar la relación de aspecto y permitir al usuario girar manualmente el dispositivo. No registrar ni enviar lecturas de sensores como telemetría educativa.
+- Preferir pantalla completa del contenedor del reproductor propio, de modo que las tarjetas y controles de 480Academy puedan seguir funcionando dentro de ese modo. Con orientación coincidente, aplicar las superposiciones y gestos de §6.2; si la orientación sigue siendo distinta, conservar el criterio de tarjeta exterior al vídeo cuando exista espacio compatible. Mantener despejada la imagen cuando no haya preguntas visibles.
+- Si el navegador impone una pantalla completa nativa exclusivamente audiovisual que no permite elementos propios, suspender temporalmente las preguntas y la navegación sin penalización. Al volver, restaurar la interfaz y, cuando proceda, la última pregunta pendiente sin generar una ráfaga de preguntas atrasadas.
+- Al salir de pantalla completa, volver a la distribución responsiva ordinaria, liberar el bloqueo de orientación solicitado cuando proceda y preservar el estado de reproducción. No prometer detección de inclinación ni cambio automático de orientación universal: validar los comportamientos disponibles en los navegadores objetivo.
 
 ## 7. Evaluaciones, perfil y certificación
 
@@ -257,9 +270,12 @@ Inventario orientativo (priorizar las historias imprescindibles; agrupar estados
 | Mis cursos | Tarjetas verticales ordenadas por acceso, curso iniciado y sin empezar; entrada al menú |
 | Curso plano | Vídeos pendientes/reanudables y vistos al final, sin numeraciones; menú abierto con evaluación y foro |
 | Curso con temas | Temas dinámicos y progreso; vista interior con vídeos en orden docente |
-| Vídeo móvil vertical | Reproductor arriba para vídeo horizontal, tarjeta de atención debajo, navegación sin colisión |
-| Vídeo vertical y orientación apaisada | Relación de aspecto preservada; tarjeta externa si existe espacio; pantalla completa nativa sin preguntas ni navegación |
-| Pregunta interactiva | Estado de respuesta, feedback, cierre y activación/desactivación en menú |
+| Vídeo horizontal en dispositivo horizontal | Reproductor amplio; tarjeta transparente superpuesta desde el borde derecho, estados visible y oculto, recuperación hacia el interior |
+| Vídeo horizontal en dispositivo vertical | Reproductor arriba a todo el ancho; tarjeta debajo sin cubrir ni redimensionar el vídeo |
+| Vídeo vertical en dispositivo vertical | Reproductor amplio; tarjeta transparente superpuesta desde el borde inferior, estados visible y oculto, recuperación hacia arriba |
+| Vídeo vertical en dispositivo horizontal | Reproductor a la máxima altura compatible; tarjeta en el espacio lateral sobrante |
+| Pantalla completa | Contenedor inmersivo en orientación apropiada al vídeo; preguntas superpuestas cuando sean compatibles, alternativa nativa sin interfaz propia cuando sea necesario |
+| Pregunta interactiva | Aparición, ocultación, recuperación de la última pendiente, respuesta, feedback y ocultación automática; alternativas accesibles a los gestos y activación/desactivación en menú |
 | Evaluaciones | Test inicial voluntario y final, resultado e intentos según corresponda |
 | Foro | Lista dinámica, hilo con respuestas anidadas, respuesta de IA identificada y composición de respuesta |
 | Progreso, perfil y recomendaciones | Avance, notas, reputación, intereses, datos y preferencias; sin señales internas |
@@ -270,7 +286,7 @@ Inventario orientativo (priorizar las historias imprescindibles; agrupar estados
 
 Incluir variantes de estado (carga, vacío, error, sin datos, sin permiso, guardado/confirmación) de los componentes imprescindibles cuando sea posible. Los controles que se muestren como funcionales deben corresponder al alcance aprobado o quedar identificados como opcionales.
 
-Validar visualmente móvil vertical, móvil apaisado y escritorio, incluida la estabilidad del reproductor y del menú. Mantener los textos de la UI en castellano en el primer tablero; los detalles de layout, espaciado, iconos, miniaturas y microcopy son refinables. No añadir numeraciones visibles al temario del alumno, rankings competitivos, banners promocionales invasivos, chatbots separados, puntuaciones predictivas para alumnos ni controles que cubran YouTube.
+Validar visualmente las cuatro combinaciones de formato de vídeo y orientación del dispositivo, escritorio y pantalla completa, incluida la estabilidad del reproductor, el contraste de tarjetas sobre imágenes variadas y la convivencia con el menú y los controles. Mostrar también los estados oculto, recuperado y respondido; ninguna pregunta debe forzar la rotación ni un redimensionamiento del vídeo. Mantener los textos de la UI en castellano en el primer tablero; los detalles de layout, espaciado, iconos, miniaturas y microcopy son refinables. No añadir numeraciones visibles al temario del alumno, rankings competitivos, banners promocionales invasivos, chatbots separados ni puntuaciones predictivas para alumnos.
 
 Flujo principal para comprobar la coherencia del tablero: iniciar sesión → Mis cursos → curso → tema si existe → vídeo → pregunta voluntaria → marcar/completar → lista adaptada → siguiente contenido. Desde el menú contextual se accede a evaluación y foro; desde perfil, a progreso y gestión documental. Incluir el camino de edición docente y el de recalibración administrativa sin inventar otras experiencias.
 
@@ -280,10 +296,11 @@ Sin modificar todavía las historias existentes, registrar los siguientes puntos
 
 | Referencia | Revisión prevista |
 | --- | --- |
-| HU-02, HU-05 | Capacidades comunes y permisos por propiedad/gestión de curso, incluidos administradores que gestionen uno |
+| HU-02, HU-05 | Capacidades comunes y permisos por propiedad/gestión de curso, incluidos administradores que gestionen uno; adaptar enlaces y metadatos audiovisuales al reproductor HTML5 y fuentes autorizadas |
 | HU-06, HU-07, HU-26 | Mis cursos por acceso, cursos planos o con temas, estados visto/manual, reanudación, orientación y estabilidad del reproductor |
 | HU-08 | Curso de bienvenida disponible si se produce; conservar su carácter no bloqueante |
-| HU-09, HU-10, HU-11 | Tarjeta externa compatible con YouTube, preferencia de preguntas, pantalla completa, edición de segmentos y generación anticipada |
+| HU-09, HU-10, HU-11, HU-38 | Tarjeta única superpuesta o exterior según formato y orientación; transparencia, gestos y recuperación, feedback y ocultación automática, preferencia de preguntas, pantalla completa, edición de segmentos y generación anticipada |
+| HU-35, HU-36, RNF-08, RNF-11 | Actualizar el seeding según el anexo, navegación contextual compatible con overlays, alojamiento externo y estabilidad del reproductor sin restricciones específicas de YouTube |
 | HU-13, HU-14, HU-16 | Acceso contextual a tests y foro, sin desplazar el protagonismo del vídeo |
 | HU-16 a HU-20 | Ordenación por actividad propagada por toda la jerarquía, incluidas intervenciones de IA |
 | HU-23, HU-24 | Recomendación adaptativa de unidades, no solo cursos; orden docente de respaldo y libertad de elección |
@@ -291,7 +308,9 @@ Sin modificar todavía las historias existentes, registrar los siguientes puntos
 | HU-32 a HU-34 | Perfil documental, estados de certificado y confirmación explícita de acuñación opcional |
 | Nuevas historias/RNF | Navegación contextual accesible, edición de perfil/preferencias, configuración segura de integraciones de IA y demás necesidades detectadas en los mockups |
 
-Quedan abiertos el detalle geométrico del menú, el criterio de marcado automático, la reversión de vistos, desempates de ordenación, transiciones, estados vacíos y el algoritmo concreto. Son cuestiones de refinamiento, no nuevos bloqueos para generar el tablero. No dar por consensuadas mejoras opcionales del grupo ni ampliar el alcance sin revisar prioridades.
+Quedan abiertos el detalle geométrico del menú, la transparencia y dimensiones de las tarjetas, los umbrales de gesto y zonas de recuperación, la compatibilidad de pantalla completa y orientación, el criterio de marcado automático, la reversión de vistos, desempates de ordenación, transiciones, estados vacíos y el algoritmo concreto. Son cuestiones de refinamiento, no nuevos bloqueos para generar el tablero. No dar por consensuadas mejoras opcionales del grupo ni ampliar el alcance sin revisar prioridades.
+
+**Reconciliación documental pendiente (28/11):** actualizar posteriormente la memoria de decisiones (§3, §4.2, §8.1 y §11 según proceda) y las historias de usuario/RNF que aún prescriben YouTube, tarjetas exclusivamente exteriores o suspensión general de preguntas en pantalla completa. Mantener alojamiento externo, preguntas voluntarias y telemetría sin vigilancia intrusiva. Contrastar el cambio con el enunciado, que permite vídeos de YouTube pero no los exige. Esta revisión modifica únicamente las convenciones UI/UX; la gestión de cursos y usuarios se revisará en una intervención posterior.
 
 ## 14. Memoria de presentación
 
