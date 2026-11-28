@@ -10,6 +10,17 @@ Implementar funciones puras en JavaScript ESM, con pruebas `node --test`. Usar o
 2. **Resultado.** Secuencia de entradas con ID, grupo, estado de acceso y acción permitida (`open` o `notice`). El servidor aplica proyecciones diferentes para tarjetas con y sin acceso. Para el consumidor bloqueado, devolver solo metadatos públicos de tarjeta. Excluir borradores ajenos.
 3. **Listas de contenidos.** Entrada `mode` (`fixed` o `adaptive`) y unidades únicas con ID, posición canónica, título, `seen`, `lastStartedAt` e `interest`. Un tema recibe el instante del vídeo pendiente iniciado más reciente de su lista, si existe. En salida, posición visual y ordinal solo cuando corresponda. Las funciones preservan títulos y posiciones de entrada.
 
+### Interfaz ESM
+
+El módulo [catalogo.mjs](../../src/lib/domain/catalogo.mjs) recibe IDs de texto únicos por colección, fechas ISO 8601 en UTC o `null` y posiciones canónicas numéricas.
+
+| Exportación | Resultado |
+| --- | --- |
+| `proyectarCatalogo(cursos)` | Lista de `{ id, group, access, action }`. `group` va de 1 a 5, `access` admite `edit`, `read` y `blocked`, y `action` es `notice` para `blocked` y `open` para el resto. El servidor adjunta los metadatos públicos de tarjeta a las entradas bloqueadas |
+| `ordenarLista(mode, unidades)` | Lista de `{ id, position, title, seen, visualPosition }`. `position` es el valor canónico y `visualPosition` empieza en 1. Solo `fixed` añade `ordinal` con el mismo valor que `visualPosition` |
+| `resumirTema(videos)` | `{ seen, lastStartedAt }` para componer una unidad en la lista de temas. `lastStartedAt` es `null` si ningún vídeo pendiente se ha iniciado |
+| `AVISO_CURSO_BLOQUEADO` | Texto del aviso que muestra la interfaz para `action: 'notice'` |
+
 ## Orden exacto de Mis cursos
 
 Asignar la primera fila que se cumpla. En cada fila ordenar de forma descendente por las claves indicadas, con nulos al final e ID ascendente como último desempate. Comparar el ID de forma estable e independiente de la configuración regional.
@@ -30,7 +41,7 @@ Al pulsar un bloqueado, mostrar «Para acceder a este curso necesitas adquirirlo
 ## Orden por lista
 
 - **Fijo.** Orden canónico por posición y luego ID. Mostrar ordinal consecutivo desde 1 antes del título y conservarlo si se inicia, se ve o se desmarca. El docente edita el orden canónico aunque el alumno vea el modo adaptativo.
-- **Adaptativo.** Sin ordinal. Primero, una única unidad pendiente previamente iniciada, la de `lastStartedAt` más reciente, con posición e ID como desempates. Después, todas las demás pendientes por interés cuando haya señal suficiente y, como respaldo y desempate, posición e ID. Finalmente, vistas/completadas en canónico. El inicio anterior y el marcado visto son estados distintos.
+- **Adaptativo.** Sin ordinal. Primero, una única unidad pendiente previamente iniciada, la de `lastStartedAt` más reciente, con posición e ID como desempates. Después, todas las demás pendientes por interés si cada una tiene una puntuación finita, con posición e ID como respaldo del tramo y desempate. Finalmente, vistas/completadas en canónico. El inicio anterior y el marcado visto son estados distintos.
 - **Ámbito.** Una configuración por lista de vídeos del curso plano, lista de temas y lista de vídeos de cada tema. Adaptar una de ellas no altera nombres, posiciones persistidas ni modos de las demás. Recalcular al entrar o tras una acción de completar o marcar/desmarcar cuando se presenta de nuevo la lista. Cualquier unidad autorizada se puede abrir.
 - Para la primera integración, un tema no vacío está completado cuando todos sus vídeos están vistos. Un curso vacío como bienvenida muestra su texto y foro sin exigir contenido audiovisual.
 
